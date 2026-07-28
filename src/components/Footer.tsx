@@ -1,5 +1,8 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   FaPhone,
   FaEnvelope,
@@ -7,6 +10,7 @@ import {
   FaFacebookF,
   FaInstagram,
 } from "react-icons/fa6";
+import { isStandaloneLpPath } from "@/lib/standalone-lp";
 
 const quickLinks = [
   { label: "Home", href: "/" },
@@ -22,6 +26,10 @@ const serviceLinks = [
 ];
 
 export default function Footer() {
+  const pathname = usePathname();
+
+  if (isStandaloneLpPath(pathname)) return null;
+
   return (
     <footer className="w-full bg-primary text-white" aria-label="Site footer">
       <div className="max-w-[1140px] mx-auto w-full px-4 py-12 lg:py-16">

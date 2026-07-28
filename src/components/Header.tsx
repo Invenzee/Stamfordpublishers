@@ -14,9 +14,11 @@ import {
   FaHeadphones,
   FaBookOpen,
 } from "react-icons/fa6";
+import { isStandaloneLpPath } from "@/lib/standalone-lp";
 
 export default function Header({ onOpenChat, onOpenSubmit }: { onOpenChat?: () => void; onOpenSubmit?: () => void }) {
   const pathname = usePathname();
+  const isStandaloneLp = isStandaloneLpPath(pathname);
   const [isServicesOpen, setIsServicesOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -52,6 +54,8 @@ export default function Header({ onOpenChat, onOpenSubmit }: { onOpenChat?: () =
     isActive(href)
       ? "text-[#59101B] font-semibold py-2 px-3 rounded-lg bg-[#59101B]/5"
       : "hover:text-[#59101B] py-2 px-3 rounded-lg hover:bg-gray-50";
+
+  if (isStandaloneLp) return null;
 
   return (
     <header className="sticky top-0 z-50 max-w-[1140px] mx-auto w-full px-4">
