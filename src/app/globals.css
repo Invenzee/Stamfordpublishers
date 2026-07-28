@@ -1,26 +1,68 @@
 @import "tailwindcss";
 
+@theme {
+  --font-sans: var(--font-poppins), sans-serif;
+  --font-heading: var(--font-raleway), sans-serif;
+  --color-primary: #59101B;
+  --color-primary-hover: #663B3D;
+  --color-primary-light: #FDF2F4;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --background: #FAFAF9;
+  --foreground: #111111;
+  --primary: #59101B;
+  --primary-hover: #663B3D;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #FAFAF9;
+  color: #111111;
+  font-family: var(--font-poppins), sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
 }
+
+p, a, button, input, select, textarea {
+  font-size: 15px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-raleway), sans-serif;
+}
+
+/* Custom 1140px Container Utility */
+.container-1140 {
+  max-width: 1140px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+/* Animated Morphing & Floating Liquid Blob */
+@keyframes blobLiquid {
+  0% {
+    border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%;
+    transform: scale(1) rotate(0deg) translateY(0px);
+  }
+  33% {
+    border-radius: 65% 35% 50% 50% / 35% 65% 35% 65%;
+    transform: scale(1.05, 0.96) rotate(6deg) translateY(-8px);
+  }
+  66% {
+    border-radius: 40% 60% 30% 70% / 60% 35% 65% 40%;
+    transform: scale(0.96, 1.05) rotate(-5deg) translateY(6px);
+  }
+  100% {
+    border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%;
+    transform: scale(1) rotate(0deg) translateY(0px);
+  }
+}
+
+.animate-blob-liquid {
+  animation: blobLiquid 10s ease-in-out infinite;
+  transform-origin: center center;
+}
+
+
