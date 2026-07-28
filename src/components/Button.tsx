@@ -25,7 +25,7 @@ export default function Button({
   rel,
 }: ButtonProps) {
   const baseStyles =
-    "inline-flex items-center justify-center gap-2.5 px-6 py-2.5 rounded-full text-[15px] font-semibold tracking-wide cursor-pointer transition-all duration-300 transform active:scale-95 group focus:outline-none select-none";
+    "inline-flex items-center justify-center gap-2.5 px-5 sm:px-6 py-2.5 rounded-full text-sm sm:text-[15px] font-semibold tracking-wide cursor-pointer transition-all duration-300 transform active:scale-95 group focus:outline-none select-none text-center whitespace-normal";
 
   const variantStyles = {
     primary:

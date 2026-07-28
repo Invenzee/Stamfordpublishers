@@ -1,0 +1,32 @@
+---
+description: Stamford design tokens, typography, and layout patterns
+globs: "**/*.{tsx,css}"
+alwaysApply: false
+---
+
+# Design System
+
+## Colors (use Tailwind tokens from `globals.css` only — no arbitrary hex in TSX)
+| Token | Utility |
+|-------|---------|
+| Primary burgundy | `bg-primary`, `text-primary`, `border-primary` |
+| Hover | `bg-primary-hover`, `hover:bg-primary-hover` |
+| Light tint | `bg-primary-light`, `text-primary-light` |
+| Background | `bg-background` |
+| Foreground | `text-foreground` |
+
+## Typography
+- **Raleway** → headings (`font-heading`, `h1–h6`)
+- **Poppins** → body/UI (`font-sans`, default 15px, `leading-relaxed`)
+- Hero scale: `text-3xl sm:text-4xl md:text-5xl font-extrabold leading-[1.18] tracking-tight`
+
+## Layout
+- Max width: `max-w-[1140px] mx-auto w-full` — no outer padding unless specified
+- Section vertical spacing: `py-12 lg:py-16` inside the container
+- Sticky header: white glass card `bg-white/95 backdrop-blur-md rounded-2xl`
+- CTAs: pill buttons `rounded-full`, primary burgundy + hover lift
+
+## Patterns
+- Icons: `react-icons/fa6` (not lucide)
+- Images: placeholder from `/public`; user swaps assets themselves
+- Animations: `animate-blob-liquid` for hero blobs; subtle hover transitions on nav/buttons

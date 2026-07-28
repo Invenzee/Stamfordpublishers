@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "./publishing-process.css";
 
 @theme {
   --font-sans: var(--font-poppins), sans-serif;
@@ -6,12 +7,14 @@
   --color-primary: #59101B;
   --color-primary-hover: #663B3D;
   --color-primary-light: #FDF2F4;
+  --color-foreground: #111111;
+  --color-background: #FAFAF9;
 }
 
 :root {
   --background: #FAFAF9;
   --foreground: #111111;
-  --primary: #59101B;
+  --primary: #440F19;
   --primary-hover: #663B3D;
 }
 
@@ -40,29 +43,56 @@ h1, h2, h3, h4, h5, h6 {
   padding-right: 1rem;
 }
 
-/* Animated Morphing & Floating Liquid Blob */
-@keyframes blobLiquid {
-  0% {
-    border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%;
-    transform: scale(1) rotate(0deg) translateY(0px);
+/* Animated floating blob — preserves fixed organic shape */
+@keyframes blobFloat {
+  0%,
+  100% {
+    transform: scale(1) rotate(0deg) translateY(0);
   }
   33% {
-    border-radius: 65% 35% 50% 50% / 35% 65% 35% 65%;
-    transform: scale(1.05, 0.96) rotate(6deg) translateY(-8px);
+    transform: scale(1.04) rotate(2deg) translateY(-6px);
   }
   66% {
-    border-radius: 40% 60% 30% 70% / 60% 35% 65% 40%;
-    transform: scale(0.96, 1.05) rotate(-5deg) translateY(6px);
-  }
-  100% {
-    border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%;
-    transform: scale(1) rotate(0deg) translateY(0px);
+    transform: scale(0.98) rotate(-2deg) translateY(5px);
   }
 }
 
-.animate-blob-liquid {
-  animation: blobLiquid 10s ease-in-out infinite;
+.animate-blob-float {
+  animation: blobFloat 10s ease-in-out infinite;
   transform-origin: center center;
 }
 
+/* 3D depth card — layered bottom extrusion + soft rose glow */
+.hero-form-card {
+  position: relative;
+  isolation: isolate;
+  padding-bottom: 1.25rem;
+  box-shadow:
+    0 6px 0 #440F19,
+    0 12px 0 #c9b5bb,
+    0 28px 48px rgba(211, 193, 198, 0.72);
+}
 
+.hero-form-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 -3px 8px rgba(0, 0, 0, 0.12);
+  pointer-events: none;
+}
+
+.hero-form-bg {
+  background: linear-gradient(180deg, transparent 0%, var(--color-primary-light) 40%, var(--color-primary-light) 100%);
+}
+
+.hero-form-bg-circle {
+  position: absolute;
+  top: -60px;
+  right: -60px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(89, 16, 27, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+}

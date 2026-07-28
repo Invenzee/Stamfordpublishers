@@ -1,136 +1,200 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
+import { motion, useReducedMotion } from "motion/react";
 import { FaCommentDots, FaPhone } from "react-icons/fa6";
 import Button from "./Button";
+import BlobShape from "./BlobShape";
+import {
+  fadeLeft,
+  fadeRight,
+  motionTransition,
+  motionViewport,
+} from "@/lib/motion";
 
-interface PublishingJourneySectionProps {
+export interface LeftRightSectionImage {
+  src: string;
+  alt: string;
+  blobColor?: string;
+}
+
+export interface LeftRightSectionButton {
+  text: string;
+  icon?: React.ElementType | React.ReactNode;
+  href?: string;
+  onClick?: () => void;
+  variant?: "primary" | "secondary" | "outline";
+}
+
+export interface LeftRightSectionContent {
   heading?: string;
   highlightedHeading?: string;
-  description?: string;
-  btn1Text?: string;
-  btn1Icon?: React.ElementType | React.ReactNode;
-  btn1Href?: string;
-  btn1OnClick?: () => void;
-  btn2Text?: string;
-  btn2Icon?: React.ElementType | React.ReactNode;
-  btn2Href?: string;
-  btn2OnClick?: () => void;
-  imageSrc?: string;
-  imageAlt?: string;
-  blobColor?: string;
+  description?: React.ReactNode;
+  buttons?: LeftRightSectionButton[];
+}
+
+export interface LeftRightSectionProps {
+  image: LeftRightSectionImage;
+  content?: LeftRightSectionContent;
+  customContent?: React.ReactNode;
+  layout?: "image-left" | "image-right";
+  imageVariant?: "book" | "photo";
+  equalColumns?: boolean;
   className?: string;
 }
 
-export default function LeftRightSection({
-  heading = "Begin Your Publishing Journey with",
-  highlightedHeading = "Stamford Publishers",
-  description = "Whether you’re publishing your first book or adding to an established portfolio, Stamford Publishers delivers comprehensive publishing solutions designed around your unique goals, guiding you through every stage of the publishing process with expert support and personalized service.",
-  btn1Text = "Get A Free Consultancy",
-  btn1Icon: Btn1Icon = FaCommentDots,
-  btn1Href = "#consultancy",
-  btn1OnClick,
-  btn2Text = "Call Now",
-  btn2Icon: Btn2Icon = FaPhone,
-  btn2Href = "tel:+18001234567",
-  btn2OnClick,
-  imageSrc = "/homepage-hero.png",
-  imageAlt = "Published Book Cover",
-  blobColor = "#59101B",
-  className = "",
-}: PublishingJourneySectionProps) {
-  const [isVisible, setIsVisible] = useState(false);
-  const sectionRef = useRef<HTMLDivElement>(null);
+const defaultButtons: LeftRightSectionButton[] = [
+  {
+    text: "Get A Free Consultancy",
+    icon: FaCommentDots,
+    href: "#consultancy",
+    variant: "primary",
+  },
+  {
+    text: "Call Now",
+    icon: FaPhone,
+    href: "tel:+18001234567",
+    variant: "secondary",
+  },
+];
 
-  // Intersection Observer to trigger entrance transition when scrolled into view
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.15 }
+export default function LeftRightSection({
+  image,
+  content,
+  customContent,
+  layout = "image-left",
+  imageVariant = "book",
+  equalColumns = false,
+  className = "",
+}: LeftRightSectionProps) {
+  const reduceMotion = useReducedMotion();
+
+  const textColSpan = equalColumns ? "lg:col-span-6" : "lg:col-span-7";
+  const imageColSpan = equalColumns ? "lg:col-span-6" : "lg:col-span-5";
+
+  const {
+    heading = "",
+    highlightedHeading = "",
+    description,
+    buttons = defaultButtons,
+  } = content ?? {};
+
+  const { src, alt, blobColor = "#59101B" } = image;
+  const imageSrc = src.startsWith("/") ? src : `/${src}`;
+
+  const imageVariants = layout === "image-left" ? fadeLeft : fadeRight;
+  const textVariants = layout === "image-left" ? fadeRight : fadeLeft;
+
+  const textColumn = customContent ?? (
+    <motion.div
+      className={`${textColSpan} space-y-4 sm:space-y-5 md:space-y-6`}
+      initial={reduceMotion ? false : "hidden"}
+      whileInView={reduceMotion ? undefined : "visible"}
+      viewport={motionViewport}
+      variants={textVariants}
+      transition={{ ...motionTransition, delay: 0.1 }}
+    >
+      {(heading || highlightedHeading) && (
+        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#111111] font-heading leading-[1.18] tracking-tight">
+          {heading}{" "}
+          {highlightedHeading && (
+            <span className="text-primary font-extrabold">{highlightedHeading}</span>
+          )}
+        </h2>
+      )}
+
+      {description && (
+        <div className="text-[#333333] text-sm sm:text-[15px] font-normal leading-relaxed max-w-xl font-sans space-y-4">
+          {typeof description === "string" ? <p>{description}</p> : description}
+        </div>
+      )}
+
+      {buttons.length > 0 && (
+        <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3 sm:gap-4 pt-1 sm:pt-2">
+          {buttons.map((button, index) => (
+            <Button
+              key={`${button.text}-${index}`}
+              text={button.text}
+              icon={button.icon}
+              href={button.href}
+              onClick={button.onClick}
+              variant={button.variant ?? (index === 0 ? "primary" : "secondary")}
+            />
+          ))}
+        </div>
+      )}
+    </motion.div>
+  );
+
+  const imageColumn =
+    imageVariant === "photo" ? (
+      <motion.div
+        className={`${imageColSpan} overflow-hidden rounded-[20px] mt-4 sm:mt-0`}
+        initial={reduceMotion ? false : "hidden"}
+        whileInView={reduceMotion ? undefined : "visible"}
+        viewport={motionViewport}
+        variants={imageVariants}
+      >
+        <img
+          src={imageSrc}
+          alt={alt}
+          className="w-full h-full object-cover aspect-[4/3] lg:aspect-auto lg:min-h-[500px]"
+        />
+      </motion.div>
+    ) : (
+      <motion.div
+        className={`${imageColSpan} relative flex justify-center items-center mt-4 sm:mt-0 overflow-visible`}
+        initial={reduceMotion ? false : "hidden"}
+        whileInView={reduceMotion ? undefined : "visible"}
+        viewport={motionViewport}
+        variants={imageVariants}
+      >
+        <div className="relative w-[160px] sm:w-[220px] md:w-[280px] lg:w-[300px] aspect-[2/3]">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[250%] sm:w-[240%] md:w-[230%] lg:w-[220%] aspect-[5/4] pointer-events-none">
+            <BlobShape color={blobColor} />
+          </div>
+          <div className="relative z-10 w-full h-full overflow-hidden transform hover:scale-[1.02] transition-transform duration-300">
+            <img
+              src={imageSrc}
+              alt={alt}
+              className="w-full h-full object-cover"
+            />
+          </div>
+        </div>
+      </motion.div>
     );
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
-
-  const renderIcon = (Icon: React.ElementType | React.ReactNode) => {
-    if (!Icon) return null;
-    if (typeof Icon === "function" || (typeof Icon === "object" && Icon !== null && "render" in (Icon as any))) {
-      const Component = Icon as React.ElementType;
-      return <Component className="w-4 h-4 shrink-0 transition-transform duration-300 group-hover:scale-110" />;
-    }
-    return <span className="shrink-0 transition-transform duration-300 group-hover:scale-110">{Icon as React.ReactNode}</span>;
-  };
+  const wrappedCustomContent =
+    customContent != null ? (
+      <motion.div
+        className={textColSpan}
+        initial={reduceMotion ? false : "hidden"}
+        whileInView={reduceMotion ? undefined : "visible"}
+        viewport={motionViewport}
+        variants={textVariants}
+        transition={{ ...motionTransition, delay: 0.1 }}
+      >
+        {customContent}
+      </motion.div>
+    ) : null;
 
   return (
     <section
-      ref={sectionRef}
-      className={`relative py-20 max-sm:px-4 max-sm:py-8 overflow-hidden ${className}`}
+      className={`relative overflow-hidden p-4 md:p-8 lg:py-16 lg:px-4 ${className}`}
     >
-      {/* 1140px container without any x-axis padding */}
-      <div className="max-w-[1140px] mx-auto px-0 w-full">
-        <div
-          className={`grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center transition-all duration-700 ease-out transform ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-            }`}
-        >
-          {/* Left Column: Text Content & Dual Action Buttons */}
-          <div className="lg:col-span-7 space-y-6">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#111111] font-heading leading-[1.18] tracking-tight">
-              {heading}{" "}
-              <span className="text-[#59101B] font-extrabold">{highlightedHeading}</span>
-            </h2>
-
-            <p className="text-[#333333] text-[15px] font-normal leading-relaxed max-w-xl font-sans">
-              {description}
-            </p>
-
-            {/* Buttons Row */}
-            <div className="flex flex-wrap items-center gap-4 pt-2">
-
-              <Button
-                text={btn1Text}
-                icon={Btn1Icon}
-                href={btn1Href}
-                onClick={btn1OnClick}
-                variant="primary"
-              />
-
-              <Button
-                text={btn2Text}
-                icon={Btn2Icon}
-                href={btn2Href}
-                onClick={btn2OnClick}
-                variant="secondary"
-              />
-            </div>
-          </div>
-
-          {/* Right Column: Organic Animated Liquid Blob & Overlaid Book Cover Image Placeholder */}
-          <div className="lg:col-span-5 relative flex justify-center items-center">
-            <div className="relative w-full max-w-[420px] aspect-[4/3] sm:aspect-square flex items-center justify-center">
-              {/* Animated Morphing Organic Liquid Blob */}
-              <div
-                className="absolute inset-2 bg-[#59101B] animate-blob-liquid shadow-lg"
-                style={{ backgroundColor: blobColor }}
-              />
-              {/* Overlaid Book Image / Placeholder Container */}
-              <div className="relative z-10 w-[220px] sm:w-[300px] aspect-[2/3] overflow-hidden transform hover:scale-[1.02] transition-transform duration-300">
-                <img
-                  src={imageSrc}
-                  alt={imageAlt}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            </div>
-          </div>
+      <div className="relative z-10 max-w-[1140px] mx-auto w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 md:gap-10 lg:gap-14 items-center">
+          {layout === "image-left" ? (
+            <>
+              {imageColumn}
+              {customContent != null ? wrappedCustomContent : textColumn}
+            </>
+          ) : (
+            <>
+              {customContent != null ? wrappedCustomContent : textColumn}
+              {imageColumn}
+            </>
+          )}
         </div>
       </div>
     </section>

@@ -1,0 +1,33 @@
+---
+description: React component patterns for Stamford marketing site
+globs: "**/*.tsx"
+alwaysApply: false
+---
+
+# Component Conventions
+
+## Structure
+- Reusable UI in `src/components/<PascalCase>.tsx` — only when the user asks for a component
+- One-off homepage sections: add inline in `src/app/page.tsx` unless told otherwise
+- Default export, typed props interface (`ComponentNameProps`) for shared components
+- Pages compose components in `src/app/**/page.tsx`
+
+## Server vs Client
+| Use server (default) | Use `"use client"` |
+|---------------------|-------------------|
+| Static layout, metadata | `useState`, `useEffect`, event handlers |
+| Presentational sections | Mobile menus, dropdowns, observers |
+| `Button` (no hooks) | `Header`, `HeroSection` |
+
+## Reuse Before Creating
+- **Button**: pill CTA — `variant="primary" | "secondary" | "outline"`, optional `href`/`icon`
+- **HeroSection**: hero/split layout with heading, highlight, description, dual CTAs, image, optional lead form
+- **Header**: sticky nav with services dropdown + Live Chat CTA
+
+## Marketing Sections (build as components)
+Hero → value badge + social proof → services → calculator → bestsellers → testimonials → FAQ → footer
+
+## HTML & SEO
+- One `<h1>` per page; semantic tags (`<section>`, `<article>`, `<footer>`)
+- No nested `<main>` — layout already wraps children in `<main>`
+- Per-page `Metadata` export on every `page.tsx`

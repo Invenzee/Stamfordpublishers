@@ -1,0 +1,28 @@
+---
+description: Stamford Publishers marketing site — project context and agent workflow
+alwaysApply: true
+---
+
+# Stamford Publishers — Project Context
+
+Marketing website for **Stamford Publishers** (book publishing). Goal: lead generation, author trust, and SEO.
+
+## Architecture
+- **Next.js 16** App Router under `src/app/`
+- **Component-based**: reusable UI in `src/components/` (`Header`, `Button`, `HeroSection`)
+- **Path alias**: `@/*` → `src/*`
+- **Tailwind v4** (CSS-first `@theme` in `globals.css`, no `tailwind.config.js`)
+- Full SEO/marketing spec: `.agents/AGENTS.md` — follow it for metadata, JSON-LD, sections, and conversion patterns
+
+## Agent Workflow
+- **Terminal**: Run commands autonomously (`npm run dev`, `npm run build`, `taskkill`, installs, git status). Do not ask permission for routine terminal operations.
+- **Browser**: Do NOT use Cursor's built-in browser or computer-use for preview. Use terminal output and code review instead.
+- **Scope**: Minimize diffs. Match existing conventions. Server components by default; `"use client"` only when hooks/events/browser APIs are needed.
+- **Animations**: Use Motion (`motion` package) for scroll-reveal on sections — see `.cursor/skills/section-animations/SKILL.md`.
+- **Marketing focus**: Every section should drive conversion (CTAs, social proof, trust signals) and follow SEO best practices from AGENTS.md.
+
+## User Workflow (always follow)
+- **Images**: Use any existing file from `/public` as a placeholder. The user replaces images themselves — never ask, confirm, or mention this.
+- **Colors**: Only use tokens from `globals.css` (`primary`, `primary-hover`, `primary-light`, `foreground`, `background`). Never hardcode arbitrary hex in TSX.
+- **Components**: Do not create new component files unless the user asks. Add one-off homepage sections inline in `page.tsx`.
+- **Layout**: Section content uses `max-w-[1140px] mx-auto w-full` with no outer padding on the container unless the user specifies otherwise.

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Poppins, Raleway } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 const poppins = Poppins({
   weight: ["300", "400", "500", "600", "700"],
@@ -52,9 +53,10 @@ export default function RootLayout({
       lang="en"
       className={`${poppins.variable} ${raleway.variable} h-full antialiased scroll-smooth`}
     >
-      <body className="min-h-full flex flex-col font-sans bg-[#FBFBFC] text-[#1D1D1F] selection:bg-[#59101B] selection:text-white">
+      <body className="min-h-full flex flex-col font-sans bg-[#FBFBFC] text-[#1D1D1F] selection:bg-[#59101B] selection:text-white overflow-x-hidden">
         <Header />
         <main className="flex-1">{children}</main>
+        <Footer />
       </body>
     </html>
   );
