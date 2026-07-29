@@ -803,7 +803,7 @@ export default function GhostwritingLpPage() {
 
               <ScrollReveal variants={scaleIn} delay={0.15} className="min-w-0">
                 <div className="rounded-2xl bg-white p-2.5 shadow-[0_18px_50px_rgba(0,0,0,0.10)]">
-                  <div className="px-5 py-4 sm:px-6 sm:py-5 -ml-20 rounded-2xl" style={{ backgroundColor: PRIMARY }}>
+                  <div className="px-5 py-4 sm:px-6 sm:py-5 -ml-20 max-sm:ml-0 rounded-2xl" style={{ backgroundColor: PRIMARY }}>
                     <h2 className="mb-1.5 font-sans text-lg font-bold leading-tight text-white sm:text-xl">
                       Activate Your Coupon To Avail 40% Discount
                     </h2>
