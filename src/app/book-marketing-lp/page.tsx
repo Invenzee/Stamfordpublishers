@@ -12,6 +12,7 @@ import {
   FaStar,
   FaXmark,
 } from "react-icons/fa6";
+import { handleLeadFormSubmit } from "@/lib/submit-form";
 
 const PHONE = "+1 562 573 2551";
 const PHONE_HREF = "tel:+15625732551";
@@ -200,7 +201,7 @@ const PHONE_DISPLAY = "(562) 573-2551";
 const FOOTER_FIELD_CLASS =
   "w-full px-4 py-2.5 border border-black/10 rounded-lg outline-none focus:border-[#ffc800] bg-[#B3B5A1] text-white placeholder:text-white text-sm transition-all duration-300";
 
-const FOOTER_SELECT_CLASS = `${FOOTER_FIELD_CLASS} appearance-none bg-[url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2712%27 height=%278%27 viewBox=%270 0 12 8%27%3E%3Cpath fill=%27%23fff%27 d=%27M1 1l5 5 5-5%27/%3E%3C/svg%3E')] bg-no-repeat bg-[right_1rem_center] pr-10`;
+const FOOTER_SELECT_CLASS = `${FOOTER_FIELD_CLASS} form-select form-select-arrow-white`;
 
 const FOOTER_BADGES = {
   dmca: "/book-marketing-lp/dmc%20(1).webp",
@@ -211,7 +212,7 @@ const FOOTER_BADGES = {
 const POPUP_FIELD_CLASS =
   "w-full px-4 py-2.5 border border-[#d9d9d9] rounded-lg bg-white text-[#111] text-sm outline-none focus:border-[#ffc800] placeholder:text-[#aaa] transition-all duration-300";
 
-const POPUP_SELECT_CLASS = `${POPUP_FIELD_CLASS} appearance-none bg-[url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2712%27 height=%278%27 viewBox=%270 0 12 8%27%3E%3Cpath fill=%27%23999%27 d=%27M1 1l5 5 5-5%27/%3E%3C/svg%3E')] bg-no-repeat bg-[right_1rem_center] pr-10`;
+const POPUP_SELECT_CLASS = `${POPUP_FIELD_CLASS} form-select form-select-arrow-muted`;
 
 const SECTION_HEADING =
   "text-2xl sm:text-3xl lg:text-5xl font-bold transition-all duration-300";
@@ -224,7 +225,7 @@ const CARD_HOVER =
 const HERO_FIELD_CLASS =
   "w-full px-4 py-2 border border-black/10 rounded-lg outline-none focus:border-[#ffc800] bg-[#B3B5A1] text-white placeholder:text-white transition-all duration-300";
 
-const HERO_SELECT_CLASS = `${HERO_FIELD_CLASS} appearance-none pr-10 bg-[url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2712%27 height=%278%27 viewBox=%270 0 12 8%27%3E%3Cpath fill=%27%23fff%27 d=%27M1 1l5 5 5-5%27/%3E%3C/svg%3E')] bg-no-repeat bg-[right_1rem_center]`;
+const HERO_SELECT_CLASS = `${HERO_FIELD_CLASS} form-select form-select-arrow-white`;
 
 const LP_BTN_BASE =
   "group relative inline-flex items-center justify-center gap-2 overflow-hidden bg-[#ffc800] text-[#111] font-bold transition-all duration-300 hover:text-white";
@@ -303,8 +304,8 @@ const TESTIMONIALS = [
   },
 ];
 
-function handleFormSubmit(e: React.FormEvent) {
-  e.preventDefault();
+function handleFormSubmit(e: React.FormEvent<HTMLFormElement>) {
+  return handleLeadFormSubmit(e, "/book-marketing-lp");
 }
 
 function WorksCarousel() {
@@ -595,10 +596,7 @@ export default function BookMarketingLpPage() {
             </button>
 
             <form
-              onSubmit={(e) => {
-                handleFormSubmit(e);
-                closePopup();
-              }}
+              onSubmit={(e) => handleLeadFormSubmit(e, "/book-marketing-lp-popup")}
               className="space-y-5 pt-1 flex flex-col items-center justify-center"
             >
               <div className="grid grid-cols-2 gap-3">

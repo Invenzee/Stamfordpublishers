@@ -6,6 +6,7 @@ import { FaCommentDots, FaPhone } from "react-icons/fa6";
 import Button from "./Button";
 import BlobShape from "./BlobShape";
 import { ScrollReveal } from "./ScrollReveal";
+import { submitLeadFormData } from "@/lib/submit-form";
 import {
   fadeLeft,
   fadeRight,
@@ -89,9 +90,28 @@ export default function HeroSection({
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onFormSubmit?.(formData);
+    const form = e.currentTarget;
+    try {
+      await submitLeadFormData(
+        {
+          fullName: formData.fullName,
+          email: formData.email,
+          phone: formData.phone,
+          subject: formData.subject,
+          message: formData.message,
+          consent: formData.consent ? "yes" : "",
+        },
+        typeof window !== "undefined" ? window.location.pathname : "hero-form",
+        form,
+      );
+      onFormSubmit?.(formData);
+    } catch (error) {
+      window.alert(
+        error instanceof Error ? error.message : "Failed to submit form. Please try again.",
+      );
+    }
   };
 
   const textColSpan = imageVariant === "full" ? "lg:col-span-6" : "lg:col-span-7";

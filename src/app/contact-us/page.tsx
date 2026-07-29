@@ -6,6 +6,7 @@ import HeroSection from "@/components/HeroSection";
 import FAQSection from "@/components/FAQSection";
 import { ScrollReveal, ScrollStagger, ScrollStaggerItem } from "@/components/ScrollReveal";
 import { fadeRight } from "@/lib/motion";
+import { submitLeadFormData } from "@/lib/submit-form";
 
 const contactFaqItems = [
   {
@@ -60,8 +61,26 @@ export default function ContactUsPage() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const form = e.currentTarget;
+    try {
+      await submitLeadFormData(
+        {
+          fullName: formData.fullName,
+          email: formData.email,
+          phone: formData.phone,
+          message: formData.message,
+          consent: formData.consent ? "yes" : "",
+        },
+        "/contact-us",
+        form,
+      );
+    } catch (error) {
+      window.alert(
+        error instanceof Error ? error.message : "Failed to submit form. Please try again.",
+      );
+    }
   };
 
   const contactPageSchema = {

@@ -14,6 +14,7 @@ import {
   staggerContainer,
   staggerItem,
 } from "@/lib/motion";
+import { handleLeadFormSubmit } from "@/lib/submit-form";
 import {
   FaBookOpen,
   FaBook,
@@ -384,15 +385,15 @@ function FaqAnswer({ children }: { children: ReactNode }) {
 const HERO_FORM_FIELD =
   "w-full px-4 py-3 border border-[#CCCCCC] rounded-xl bg-white text-[#111] text-sm outline-none focus:border-[#8E24AA] placeholder:text-[#757575] transition-all duration-300";
 
-const HERO_FORM_SELECT = `${HERO_FORM_FIELD} appearance-none bg-[url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2712%27 height=%278%27 viewBox=%270 0 12 8%27%3E%3Cpath fill=%27%23000%27 d=%27M1 1l5 5 5-5%27/%3E%3C/svg%3E')] bg-no-repeat bg-[right_1rem_center] pr-10`;
+const HERO_FORM_SELECT = `${HERO_FORM_FIELD} form-select form-select-arrow-dark`;
 
 const FIELD_CLASS =
   "w-full px-4 py-3 border border-black/50 rounded-lg outline-none focus:border-[#9C27B0] bg-white text-[#111] placeholder:text-[#999] text-sm transition-all duration-300";
 
-const SELECT_CLASS = `${FIELD_CLASS} appearance-none bg-[url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2712%27 height=%278%27 viewBox=%270 0 12 8%27%3E%3Cpath fill=%27%23999%27 d=%27M1 1l5 5 5-5%27/%3E%3C/svg%3E')] bg-no-repeat bg-[right_1rem_center] pr-10`;
+const SELECT_CLASS = `${FIELD_CLASS} form-select form-select-arrow-muted`;
 
-function handleFormSubmit(e: React.FormEvent) {
-  e.preventDefault();
+function handleFormSubmit(e: React.FormEvent<HTMLFormElement>) {
+  return handleLeadFormSubmit(e, "/childrens-book-lp");
 }
 
 const BTN_BASE =
@@ -829,10 +830,7 @@ export default function ChildrensBookLpPage() {
                 <FaXmark className="w-3.5 h-3.5" />
               </button>
               <form
-                onSubmit={(e) => {
-                  handleFormSubmit(e);
-                  closePopup();
-                }}
+                onSubmit={(e) => handleLeadFormSubmit(e, "/childrens-book-lp-popup")}
                 className="space-y-3 pt-6"
               >
                 <input type="text" name="name" placeholder="Name" required className={FIELD_CLASS} />

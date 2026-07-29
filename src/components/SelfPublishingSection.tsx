@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
 import Button from "./Button";
 import { fadeLeft, fadeRight, motionTransition, motionViewport } from "@/lib/motion";
+import { submitLeadFormData } from "@/lib/submit-form";
 
 export interface SelfPublishingFormData {
   fullName: string;
@@ -54,9 +55,27 @@ export default function SelfPublishingSection({
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onFormSubmit?.(formData);
+    const form = e.currentTarget;
+    try {
+      await submitLeadFormData(
+        {
+          fullName: formData.fullName,
+          email: formData.email,
+          phone: formData.phone,
+          message: formData.message,
+          consent: formData.consent ? "yes" : "",
+        },
+        typeof window !== "undefined" ? window.location.pathname : "self-publishing-form",
+        form,
+      );
+      onFormSubmit?.(formData);
+    } catch (error) {
+      window.alert(
+        error instanceof Error ? error.message : "Failed to submit form. Please try again.",
+      );
+    }
   };
 
   const formBlock = (

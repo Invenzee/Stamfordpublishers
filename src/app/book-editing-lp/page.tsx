@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import { createPortal } from "react-dom";
 import { AnimatePresence, motion, useInView, useReducedMotion } from "motion/react";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import {
@@ -12,6 +13,7 @@ import {
   staggerContainer,
   staggerItem,
 } from "@/lib/motion";
+import { handleLeadFormSubmit } from "@/lib/submit-form";
 import {
   FaCheck,
   FaChevronDown,
@@ -32,12 +34,15 @@ import {
   FaRocket,
   FaUserPen,
   FaUserSecret,
+  FaXmark,
 } from "react-icons/fa6";
 
 const PHONE_DISPLAY = "(562) 573-2551";
 const PHONE_HREF = "tel:+15625732551";
 const EMAIL = "info@stamfordpublishers.com";
 const ADDRESS = "1001 Wilshire Boulevard #1439 Los Angeles, CA 90017";
+const POPUP_DELAY_MS = 30000;
+const POPUP_SESSION_KEY = "book-editing-lp-popup-dismissed";
 
 /* Palette */
 const PRIMARY = "#61DCC6";
@@ -361,14 +366,14 @@ const BTN_BASE =
 const PILL_FIELD =
   "w-full rounded-full px-5 py-3 text-sm font-medium text-[#111] outline-none transition-all duration-300 placeholder:text-[#111]/60 focus:ring-2 focus:ring-[#111]/15 [&:-webkit-autofill]:[-webkit-text-fill-color:#111] [&:-webkit-autofill]:[box-shadow:0_0_0_1000px_#61DCC6_inset]";
 
-const PILL_SELECT = `${PILL_FIELD} appearance-none bg-[url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2712%27 height=%278%27 viewBox=%270 0 12 8%27%3E%3Cpath fill=%27%23111%27 d=%27M1 1l5 5 5-5%27/%3E%3C/svg%3E')] bg-no-repeat bg-[right_1.25rem_center] pr-11 [&>option]:bg-white [&>option]:text-[#111]`;
+const PILL_SELECT = `${PILL_FIELD} form-select form-select-arrow-dark [&>option]:bg-white [&>option]:text-[#111]`;
 
 function pillFieldStyle() {
   return { backgroundColor: PRIMARY, color: ON_PRIMARY } as const;
 }
 
-function handleFormSubmit(e: React.FormEvent) {
-  e.preventDefault();
+function handleFormSubmit(e: React.FormEvent<HTMLFormElement>) {
+  return handleLeadFormSubmit(e, "/book-editing-lp");
 }
 
 function PrimaryButton({
@@ -943,6 +948,8 @@ function MidPageCta() {
 export default function BookEditingLpPage() {
   const reduceMotion = useReducedMotion();
   const [headerScrolled, setHeaderScrolled] = useState(false);
+  const [popupOpen, setPopupOpen] = useState(false);
+  const [popupMounted, setPopupMounted] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setHeaderScrolled(window.scrollY > 24);
@@ -950,6 +957,171 @@ export default function BookEditingLpPage() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  useEffect(() => {
+    setPopupMounted(true);
+  }, []);
+
+  useEffect(() => {
+    let dismissed = false;
+    try {
+      dismissed = sessionStorage.getItem(POPUP_SESSION_KEY) === "1";
+    } catch {
+      dismissed = false;
+    }
+    if (dismissed) return;
+    const timer = window.setTimeout(() => setPopupOpen(true), POPUP_DELAY_MS);
+    return () => window.clearTimeout(timer);
+  }, []);
+
+  const closePopup = () => {
+    setPopupOpen(false);
+    try {
+      sessionStorage.setItem(POPUP_SESSION_KEY, "1");
+    } catch {
+      // ignore
+    }
+  };
+
+  const popupModal =
+    popupOpen && popupMounted
+      ? createPortal(
+          <motion.div
+            className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/55 backdrop-blur-sm"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="be-popup-heading"
+            initial={reduceMotion ? false : { opacity: 0 }}
+            animate={reduceMotion ? undefined : { opacity: 1 }}
+            transition={{ duration: 0.3 }}
+          >
+            <motion.div
+              className="relative grid w-full max-w-[920px] max-h-[90vh] overflow-hidden rounded-2xl shadow-[0_24px_64px_rgba(0,0,0,0.25)] md:grid-cols-[42%_58%] bg-white"
+              initial={reduceMotion ? false : { opacity: 0, scale: 0.94, y: 24 }}
+              animate={reduceMotion ? undefined : { opacity: 1, scale: 1, y: 0 }}
+              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <div
+                className="flex min-h-[320px] flex-col p-6 lg:p-8"
+                style={{ backgroundColor: PRIMARY_SOFT }}
+              >
+                <h2
+                  id="be-popup-heading"
+                  className="mb-3 font-sans text-2xl font-bold leading-tight text-[#111] sm:text-3xl"
+                >
+                  Turn Your Manuscript Into A Masterpiece
+                </h2>
+                <div className="mb-6 space-y-3 text-sm text-[#111]">
+                  <div className="flex items-start gap-3">
+                    <FaPhone className="mt-1 h-4 w-4 shrink-0" aria-hidden="true" />
+                    <div>
+                      <h3 className="font-bold">Call Us</h3>
+                      <a href={PHONE_HREF} className="hover:underline">
+                        {PHONE_DISPLAY}
+                      </a>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <FaEnvelope className="mt-1 h-4 w-4 shrink-0" aria-hidden="true" />
+                    <div>
+                      <h3 className="font-bold">Discuss your manuscript</h3>
+                      <a href={`mailto:${EMAIL}`} className="break-all hover:underline">
+                        {EMAIL}
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div className="mt-auto flex justify-center">
+                  <img
+                    src="/sp-editing-lp/hero-img.webp"
+                    alt="Manuscript editing and proofreading"
+                    className="max-h-[200px] w-full max-w-[280px] rounded-xl object-cover"
+                  />
+                </div>
+              </div>
+              <div className="relative overflow-y-auto p-6 sm:p-8">
+                <button
+                  type="button"
+                  onClick={closePopup}
+                  className="absolute top-4 right-4 flex h-7 w-7 items-center justify-center rounded-md bg-[#111] text-white hover:bg-[#333]"
+                  aria-label="Close popup"
+                >
+                  <FaXmark className="h-3.5 w-3.5" />
+                </button>
+                <form
+                  onSubmit={(e) => handleLeadFormSubmit(e, "/book-editing-lp-popup")}
+                  className="space-y-3 pt-6"
+                >
+                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                    <input
+                      type="text"
+                      name="name"
+                      placeholder="Name"
+                      required
+                      className={PILL_FIELD}
+                      style={pillFieldStyle()}
+                    />
+                    <input
+                      type="email"
+                      name="email"
+                      placeholder="Email"
+                      required
+                      className={PILL_FIELD}
+                      style={pillFieldStyle()}
+                    />
+                  </div>
+                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                    <input
+                      type="tel"
+                      name="phone"
+                      placeholder="Phone Number"
+                      required
+                      className={PILL_FIELD}
+                      style={pillFieldStyle()}
+                    />
+                    <select
+                      name="genre"
+                      required
+                      defaultValue=""
+                      className={PILL_SELECT}
+                      style={pillFieldStyle()}
+                    >
+                      <option value="" disabled>
+                        Select Genre
+                      </option>
+                      {GENRE_OPTIONS.map((genre) => (
+                        <option key={genre} value={genre}>
+                          {genre}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <select
+                    name="service"
+                    required
+                    defaultValue=""
+                    className={PILL_SELECT}
+                    style={pillFieldStyle()}
+                  >
+                    <option value="" disabled>
+                      Select Service
+                    </option>
+                    {SERVICE_OPTIONS.map((service) => (
+                      <option key={service} value={service}>
+                        {service}
+                      </option>
+                    ))}
+                  </select>
+                  <PrimaryButton type="submit" className="w-full uppercase tracking-wide">
+                    Submit Now
+                  </PrimaryButton>
+                </form>
+              </div>
+            </motion.div>
+          </motion.div>,
+          document.body,
+        )
+      : null;
 
   return (
     <>
@@ -1390,6 +1562,7 @@ export default function BookEditingLpPage() {
           </div>
         </div>
       </footer>
+      {popupModal}
     </>
   );
 }

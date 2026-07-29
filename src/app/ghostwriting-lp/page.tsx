@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import { createPortal } from "react-dom";
 import { AnimatePresence, motion, useInView, useReducedMotion } from "motion/react";
 import { ScrollReveal, ScrollStagger, ScrollStaggerItem } from "@/components/ScrollReveal";
 import {
@@ -11,6 +12,7 @@ import {
   staggerContainer,
   staggerItem,
 } from "@/lib/motion";
+import { handleLeadFormSubmit } from "@/lib/submit-form";
 import {
   FaBars,
   FaChevronDown,
@@ -26,6 +28,8 @@ const PHONE_DISPLAY = "(562) 573 2551";
 const PHONE_HREF = "tel:+15625732551";
 const EMAIL = "info@stamfordpublishers.com";
 const ADDRESS = "1001 Wilshire Boulevard #1439 Los Angeles, CA 90017";
+const POPUP_DELAY_MS = 30000;
+const POPUP_SESSION_KEY = "ghostwriting-lp-popup-dismissed";
 
 /* Palette */
 const PRIMARY = "#F24506";
@@ -259,10 +263,10 @@ const BTN_BASE =
 const LINE_FIELD =
   "w-full border-0 border-b border-[#DCD3CE] bg-transparent px-1 pb-2.5 pt-2 text-sm text-[#111] outline-none transition-colors duration-300 placeholder:text-[#9C9C9C] focus:border-[#F24506]";
 
-const LINE_SELECT = `${LINE_FIELD} appearance-none bg-[url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2712%27 height=%278%27 viewBox=%270 0 12 8%27%3E%3Cpath fill=%27%23777%27 d=%27M1 1l5 5 5-5%27/%3E%3C/svg%3E')] bg-no-repeat bg-[right_0.25rem_center] pr-8`;
+const LINE_SELECT = `${LINE_FIELD} form-select form-select-arrow-muted`;
 
-function handleFormSubmit(e: React.FormEvent) {
-  e.preventDefault();
+function handleFormSubmit(e: React.FormEvent<HTMLFormElement>) {
+  return handleLeadFormSubmit(e, "/ghostwriting-lp");
 }
 
 function PrimaryButton({
@@ -485,6 +489,8 @@ export default function GhostwritingLpPage() {
   const [headerScrolled, setHeaderScrolled] = useState(false);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [openFaq, setOpenFaq] = useState(0);
+  const [popupOpen, setPopupOpen] = useState(false);
+  const [popupMounted, setPopupMounted] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setHeaderScrolled(window.scrollY > 24);
@@ -492,6 +498,149 @@ export default function GhostwritingLpPage() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  useEffect(() => {
+    setPopupMounted(true);
+  }, []);
+
+  useEffect(() => {
+    let dismissed = false;
+    try {
+      dismissed = sessionStorage.getItem(POPUP_SESSION_KEY) === "1";
+    } catch {
+      dismissed = false;
+    }
+    if (dismissed) return;
+    const timer = window.setTimeout(() => setPopupOpen(true), POPUP_DELAY_MS);
+    return () => window.clearTimeout(timer);
+  }, []);
+
+  const closePopup = () => {
+    setPopupOpen(false);
+    try {
+      sessionStorage.setItem(POPUP_SESSION_KEY, "1");
+    } catch {
+      // ignore
+    }
+  };
+
+  const popupModal =
+    popupOpen && popupMounted
+      ? createPortal(
+          <motion.div
+            className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/55 backdrop-blur-sm"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="gw-popup-heading"
+            initial={reduceMotion ? false : { opacity: 0 }}
+            animate={reduceMotion ? undefined : { opacity: 1 }}
+            transition={{ duration: 0.3 }}
+          >
+            <motion.div
+              className="relative grid w-full max-w-[920px] max-h-[90vh] overflow-hidden rounded-2xl shadow-[0_24px_64px_rgba(0,0,0,0.25)] md:grid-cols-[42%_58%] bg-white"
+              initial={reduceMotion ? false : { opacity: 0, scale: 0.94, y: 24 }}
+              animate={reduceMotion ? undefined : { opacity: 1, scale: 1, y: 0 }}
+              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <div
+                className="flex min-h-[320px] flex-col p-6 text-white lg:p-8"
+                style={{ backgroundColor: PRIMARY }}
+              >
+                <h2
+                  id="gw-popup-heading"
+                  className="mb-3 font-sans text-2xl font-bold leading-tight sm:text-3xl"
+                >
+                  Bring Your Book Idea to Life With Expert Ghostwriters
+                </h2>
+                <div className="mb-6 space-y-3 text-sm">
+                  <div className="flex items-start gap-3">
+                    <FaPhone className="mt-1 h-4 w-4 shrink-0" aria-hidden="true" />
+                    <div>
+                      <h3 className="font-bold">Call Us</h3>
+                      <a href={PHONE_HREF} className="hover:underline">
+                        {PHONE_DISPLAY}
+                      </a>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <FaEnvelope className="mt-1 h-4 w-4 shrink-0" aria-hidden="true" />
+                    <div>
+                      <h3 className="font-bold">Discuss your story</h3>
+                      <a href={`mailto:${EMAIL}`} className="break-all hover:underline">
+                        {EMAIL}
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div className="mt-auto flex justify-center">
+                  <img
+                    src="/ghostwriting-lp/form-img.webp"
+                    alt="Ghostwriting consultation"
+                    className="max-h-[200px] w-full max-w-[280px] rounded-xl object-contain"
+                  />
+                </div>
+              </div>
+              <div className="relative overflow-y-auto p-6 sm:p-8">
+                <button
+                  type="button"
+                  onClick={closePopup}
+                  className="absolute top-4 right-4 flex h-7 w-7 items-center justify-center rounded-md bg-[#111] text-white hover:bg-[#333]"
+                  aria-label="Close popup"
+                >
+                  <FaXmark className="h-3.5 w-3.5" />
+                </button>
+                <form
+                  onSubmit={(e) => handleLeadFormSubmit(e, "/ghostwriting-lp-popup")}
+                  className="space-y-4 pt-6"
+                >
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6">
+                    <input type="text" name="name" placeholder="Name" required className={LINE_FIELD} />
+                    <input type="email" name="email" placeholder="Email" required className={LINE_FIELD} />
+                  </div>
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6">
+                    <input
+                      type="tel"
+                      name="phone"
+                      placeholder="123-456-7890"
+                      required
+                      className={LINE_FIELD}
+                    />
+                    <select name="genre" required defaultValue="Audio Book" className={LINE_SELECT}>
+                      {GENRE_OPTIONS.map((option) => (
+                        <option key={option} value={option}>
+                          {option}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <input
+                    type="text"
+                    name="bookTitle"
+                    placeholder="Book Title"
+                    required
+                    className={LINE_FIELD}
+                  />
+                  <textarea
+                    name="aboutBook"
+                    placeholder="Tell Us About Your Book"
+                    required
+                    rows={4}
+                    className={`${LINE_FIELD} min-h-[90px] resize-y`}
+                  />
+                  <button
+                    type="submit"
+                    className="w-full cursor-pointer rounded-md px-6 py-3 text-sm font-bold uppercase tracking-wide text-white transition-all duration-300 hover:-translate-y-0.5 hover:brightness-95 hover:shadow-lg active:scale-[0.99]"
+                    style={{ backgroundColor: PRIMARY }}
+                  >
+                    Submit Now
+                  </button>
+                </form>
+              </div>
+            </motion.div>
+          </motion.div>,
+          document.body,
+        )
+      : null;
 
   return (
     <>
@@ -1261,6 +1410,7 @@ export default function GhostwritingLpPage() {
           </div>
         </div>
       </footer>
+      {popupModal}
     </>
   );
 }
