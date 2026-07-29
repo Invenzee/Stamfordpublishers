@@ -37,7 +37,7 @@ export default function Footer() {
           <div className="lg:w-[35%] space-y-5">
             <Link href="/" className="inline-block">
               <img
-                src="/logo.png"
+                src="/logo.webp"
                 alt="Stamford Publishers"
                 width={140}
                 height={140}

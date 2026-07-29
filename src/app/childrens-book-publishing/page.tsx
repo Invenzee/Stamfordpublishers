@@ -127,7 +127,7 @@ export default function ChildrensBookPublishingPage() {
         btn1Text="Start Your Journey"
         btn2Text="Call Now"
         btn2Href="tel:+15625732551"
-        imageSrc="/0.png"
+        imageSrc="/0.webp"
         imageAlt="Children's book cover sample"
         imageVariant="full"
         showForm
@@ -141,7 +141,7 @@ export default function ChildrensBookPublishingPage() {
         imageVariant="photo"
         equalColumns
         image={{
-          src: "/children-book-1.jpg",
+          src: "/children-book-1.webp",
           alt: "Children reading and playing with books",
         }}
         content={{
@@ -158,7 +158,7 @@ export default function ChildrensBookPublishingPage() {
         equalColumns
         className="bg-[#f0f7f2]"
         image={{
-          src: "/children-book-2.jpg",
+          src: "/children-book-2.webp",
           alt: "Children reading books outdoors",
         }}
         content={{
@@ -193,7 +193,7 @@ export default function ChildrensBookPublishingPage() {
         btn1Text="Start Your Journey"
         btn1Href="#consultancy"
         btn2Href="tel:+15625732551"
-        backgroundImageSrc="/children-book-3.jpg"
+        backgroundImageSrc="/children-book-3.webp"
         className="mb-12 sm:mb-24"
       />
 

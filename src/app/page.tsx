@@ -17,7 +17,7 @@ export default function Home() {
         description="Whether you're publishing your first book or adding to an established portfolio, Stamford Publishers delivers comprehensive publishing solutions designed around your unique goals, guiding you through every stage of the publishing process with expert support and personalized service."
         btn1Text="Get A Free Consultancy"
         btn2Text="Call Now"
-        imageSrc="/homepage-hero.png"
+        imageSrc="/homepage-hero.webp"
         imageAlt="Indigenous Spirituality Book Cover"
         showForm
       />
@@ -25,7 +25,7 @@ export default function Home() {
       <LeftRightSection
         layout="image-left"
         image={{
-          src: "/01.png",
+          src: "/01.webp",
           alt: "The Jade Whisper Book Cover",
         }}
         content={{
@@ -38,7 +38,7 @@ export default function Home() {
       <LeftRightSection
         layout="image-right"
         image={{
-          src: "/0.png",
+          src: "/0.webp",
           alt: "The Jade Whisper Book Cover",
         }}
         content={{
@@ -60,7 +60,7 @@ export default function Home() {
             <ScrollReveal variants={fadeLeft}>
               <div className="overflow-hidden rounded-[20px]">
                 <img
-                  src="/hero-image-1.jpg"
+                  src="/hero-image-1.webp"
                   alt="Author working on manuscript"
                   className="w-full h-full object-cover aspect-[4/3] lg:aspect-auto lg:min-h-[500px]"
                 />

@@ -24,7 +24,7 @@ export default function ConsultationCTASection({
   btn1Href = "#consultancy",
   btn2Text = "Call Now",
   btn2Href = "tel:+18001234567",
-  backgroundImageSrc = "/consultation-image.jpg",
+  backgroundImageSrc = "/consultation-image.webp",
   className = "",
 }: ConsultationCTASectionProps) {
   return (

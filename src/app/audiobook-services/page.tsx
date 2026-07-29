@@ -69,7 +69,7 @@ export default function AudiobookServicesPage() {
         btn1Text="Get Free Consultancy"
         btn2Text="Call Now"
         btn2Href="tel:+15625732551"
-        imageSrc="/audiobook-1.jpg"
+        imageSrc="/audiobook-1.webp"
         imageAlt="Author listening to an audiobook with headphones"
         imageVariant="full"
         showForm
@@ -83,7 +83,7 @@ export default function AudiobookServicesPage() {
         imageVariant="photo"
         equalColumns
         image={{
-          src: "/audiobook-2.jpg",
+          src: "/audiobook-2.webp",
           alt: "Headphones on an open book",
         }}
         content={{
@@ -99,7 +99,7 @@ export default function AudiobookServicesPage() {
         imageVariant="photo"
         equalColumns
         image={{
-          src: "/audiobook-3.jpg",
+          src: "/audiobook-3.webp",
           alt: "Headphones with a book",
         }}
         content={{
@@ -115,7 +115,7 @@ export default function AudiobookServicesPage() {
         imageVariant="photo"
         equalColumns
         image={{
-          src: "/audiobook-4.jpg",
+          src: "/audiobook-4.webp",
           alt: "Woman listening with headphones in a library",
         }}
         content={{
@@ -132,7 +132,7 @@ export default function AudiobookServicesPage() {
         equalColumns
         className="bg-primary-light/30"
         image={{
-          src: "/audiobook-5.jpg",
+          src: "/audiobook-5.webp",
           alt: "Headphones above an open book",
         }}
         content={{

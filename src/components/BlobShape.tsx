@@ -14,8 +14,8 @@ export default function BlobShape({
       className={`absolute inset-0 animate-blob-float drop-shadow-[0_8px_24px_rgba(89,16,27,0.35)] ${className}`}
       style={{
         backgroundColor: color,
-        WebkitMaskImage: "url('/blob.png')",
-        maskImage: "url('/blob.png')",
+        WebkitMaskImage: "url('/blob.webp')",
+        maskImage: "url('/blob.webp')",
         WebkitMaskSize: "contain",
         maskSize: "contain",
         WebkitMaskRepeat: "no-repeat",

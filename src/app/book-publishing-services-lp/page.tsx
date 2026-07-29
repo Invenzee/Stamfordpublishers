@@ -96,9 +96,9 @@ const AGENCY_POINTS = [
 ];
 
 const SERVICE_COVERS = [
-  { src: "/book-marketing-lp/Graphic-Google-07.png", alt: "Published book cover sample" },
-  { src: "/book-marketing-lp/Graphic-Google.png", alt: "Published book cover sample" },
-  { src: "/childrens-book-lp/Graphic-Google-04-669x1024.png", alt: "Published book cover sample" },
+  { src: "/book-marketing-lp/Graphic-Google-07.webp", alt: "Published book cover sample" },
+  { src: "/book-marketing-lp/Graphic-Google.webp", alt: "Published book cover sample" },
+  { src: "/childrens-book-lp/Graphic-Google-04-669x1024.webp", alt: "Published book cover sample" },
 ];
 
 const PLAN_FEATURES = [
@@ -178,11 +178,11 @@ const FICTION_POINTS = [
 ];
 
 const SOLUTION_COVERS = [
-  { src: "/book-marketing-lp/Graphic-Google-02.png", alt: "Published book cover" },
-  { src: "/book-marketing-lp/Graphic-Google-07.png", alt: "Published book cover" },
-  { src: "/book-marketing-lp/Graphic-Google-08.png", alt: "Published book cover" },
-  { src: "/book-marketing-lp/Graphic-Google-09-scaled.png", alt: "Published book cover" },
-  { src: "/book-marketing-lp/Graphic-Google-03-1-scaled.png", alt: "Published book cover" },
+  { src: "/book-marketing-lp/Graphic-Google-02.webp", alt: "Published book cover" },
+  { src: "/book-marketing-lp/Graphic-Google-07.webp", alt: "Published book cover" },
+  { src: "/book-marketing-lp/Graphic-Google-08.webp", alt: "Published book cover" },
+  { src: "/book-marketing-lp/Graphic-Google-09-scaled.webp", alt: "Published book cover" },
+  { src: "/book-marketing-lp/Graphic-Google-03-1-scaled.webp", alt: "Published book cover" },
 ];
 
 const FAQ_ITEMS = [
@@ -200,7 +200,7 @@ const PAYMENT_LOGOS = [
 const REVIEW_LOGOS = [
   { src: "/book-marketing-lp/dmc%20(1).webp", alt: "Clutch reviews" },
   { src: "/book-marketing-lp/trustpilot-1.webp", alt: "Trustpilot reviews" },
-  { src: "/childrens-book-lp/google.png", alt: "Google reviews" },
+  { src: "/childrens-book-lp/google.webp", alt: "Google reviews" },
 ];
 
 const FOOTER_QUICK_LINKS = [
@@ -625,7 +625,7 @@ export default function BookPublishingServicesLpPage() {
               aria-label="Stamford Publishers"
             >
               <img
-                src="/ghostwriting-lp/logo.png"
+                src="/ghostwriting-lp/logo.webp"
                 alt="Stamford Publishers"
                 width={150}
                 height={150}
@@ -808,7 +808,7 @@ export default function BookPublishingServicesLpPage() {
             <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
               <MotionColumn from="left">
                 <img
-                  src="/book-publishing-service-lp/sec1.jpg"
+                  src="/book-publishing-service-lp/sec1.webp"
                   alt="Ghostwriter drafting a manuscript"
                   className="h-[280px] w-full rounded-2xl object-cover shadow-lg transition-transform duration-500 hover:scale-[1.02] sm:h-[380px] lg:h-[600px]"
                   loading="lazy"
@@ -872,7 +872,7 @@ export default function BookPublishingServicesLpPage() {
               </MotionColumn>
               <MotionColumn from="right">
                 <img
-                  src="/book-publishing-service-lp/sec2.jpg"
+                  src="/book-publishing-service-lp/sec2.webp"
                   alt="Notebook, pen, and story outline on a desk"
                   className="h-[240px] w-full rounded-2xl object-cover shadow-lg transition-transform duration-500 hover:scale-[1.02] sm:h-[320px] lg:h-[380px]"
                   loading="lazy"
@@ -1030,7 +1030,7 @@ export default function BookPublishingServicesLpPage() {
             <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
               <MotionColumn from="left">
                 <img
-                  src="/book-publishing-service-lp/sec3.jpg"
+                  src="/book-publishing-service-lp/sec3.webp"
                   alt="Stack of published books"
                   className="h-[280px] w-full rounded-2xl object-cover shadow-lg transition-transform duration-500 hover:scale-[1.02] sm:h-[400px] lg:h-[500px]"
                   loading="lazy"
@@ -1091,7 +1091,7 @@ export default function BookPublishingServicesLpPage() {
               </MotionColumn>
               <MotionColumn from="right">
                 <img
-                  src="/book-publishing-service-lp/sec4.jpg"
+                  src="/book-publishing-service-lp/sec4.webp"
                   alt="Author reading in a library"
                   className="h-[240px] w-full rounded-2xl object-cover shadow-lg transition-transform duration-500 hover:scale-[1.02] sm:h-[340px] lg:h-[450px]"
                   loading="lazy"
@@ -1273,7 +1273,7 @@ export default function BookPublishingServicesLpPage() {
           <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-[1.5fr_0.8fr_1.1fr_1.1fr] lg:gap-12">
             <ScrollReveal>
               <img
-                src="/ghostwriting-lp/logo.png"
+                src="/ghostwriting-lp/logo.webp"
                 alt="Stamford Publishers"
                 className="mb-5 w-40 transition-transform duration-300 hover:scale-105"
                 loading="lazy"

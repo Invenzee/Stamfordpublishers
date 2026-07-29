@@ -102,7 +102,7 @@ export default function AboutUsPage() {
         imageVariant="photo"
         equalColumns
         image={{
-          src: "/about-1.jpg",
+          src: "/about-1.webp",
           alt: "Author in a library setting",
         }}
         content={{
@@ -122,7 +122,7 @@ export default function AboutUsPage() {
         imageVariant="photo"
         equalColumns
         image={{
-          src: "/about-2.jpg",
+          src: "/about-2.webp",
           alt: "Author writing in a cafe",
         }}
         customContent={
@@ -180,7 +180,7 @@ export default function AboutUsPage() {
             <ScrollReveal className="lg:col-span-6" variants={fadeRight}>
               <div className="overflow-hidden rounded-[20px]">
                 <img
-                  src="/about-3.jpg"
+                  src="/about-3.webp"
                   alt="Team collaborating on book publishing"
                   className="w-full h-full object-cover aspect-[4/3] lg:aspect-auto lg:min-h-[500px]"
                 />

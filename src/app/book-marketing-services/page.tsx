@@ -161,7 +161,7 @@ export default function BookMarketingServicesPage() {
         btn1Text="Get A Free Consultation"
         btn2Text="Call Now"
         btn2Href="tel:+15625732551"
-        imageSrc="/book-marketing.jpg"
+        imageSrc="/book-marketing.webp"
         imageAlt="Books and marketing materials on a desk"
         imageVariant="full"
         showForm

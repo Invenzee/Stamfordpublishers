@@ -63,7 +63,7 @@ export default function Header({ onOpenChat, onOpenSubmit }: { onOpenChat?: () =
         <div className="flex items-center justify-between">
           {/* Brand Logo */}
           <Link href="/" className="flex items-center">
-            <img src="/logo.png" alt="Stamford Publishers" width={100} height={100} className="w-20 h-auto sm:w-[100px]" />
+            <img src="/logo.webp" alt="Stamford Publishers" width={100} height={100} className="w-20 h-auto sm:w-[100px]" />
           </Link>
 
           {/* Desktop Navigation */}

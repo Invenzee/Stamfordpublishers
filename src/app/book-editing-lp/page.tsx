@@ -248,8 +248,8 @@ const GENRES = [
     title: "Romance",
     body: "Capture the emotions that keep readers turning pages. Our editors refine character development, dialogue, pacing, and emotional depth while preserving your unique voice. We help create compelling love stories that resonate with readers and leave a lasting impression.",
     covers: [
-      { src: "/sp-editing-lp/romance-1.png", alt: "Romance book cover sample" },
-      { src: "/sp-editing-lp/romance-2.png", alt: "Romance book cover sample" },
+      { src: "/sp-editing-lp/romance-1.webp", alt: "Romance book cover sample" },
+      { src: "/sp-editing-lp/romance-2.webp", alt: "Romance book cover sample" },
     ],
   },
   {
@@ -259,8 +259,8 @@ const GENRES = [
     title: "Science Fiction",
     body: "Build immersive future worlds without sacrificing narrative momentum. Our editors carefully evaluate internal logic, technical consistency, sci-fi tropes, and plot pacing to ensure your high-concept ideas translate into a seamless, captivating read.",
     covers: [
-      { src: "/sp-editing-lp/science-1.png", alt: "Science Fiction book cover sample" },
-      { src: "/sp-editing-lp/science-2.png", alt: "Science Fiction book cover sample" },
+      { src: "/sp-editing-lp/science-1.webp", alt: "Science Fiction book cover sample" },
+      { src: "/sp-editing-lp/science-2.webp", alt: "Science Fiction book cover sample" },
     ],
   },
   {
@@ -270,8 +270,8 @@ const GENRES = [
     title: "Historical Fiction",
     body: "Transport readers to another era with accuracy and atmosphere. We refine dialogue authenticity, historical tone, and period-appropriate details while ensuring your central story and characters stay engaging and clear.",
     covers: [
-      { src: "/sp-editing-lp/history-1.png", alt: "Historical Fiction book cover sample" },
-      { src: "/sp-editing-lp/history-2.png", alt: "Historical Fiction book cover sample" },
+      { src: "/sp-editing-lp/history-1.webp", alt: "Historical Fiction book cover sample" },
+      { src: "/sp-editing-lp/history-2.webp", alt: "Historical Fiction book cover sample" },
     ],
   },
   {
@@ -281,8 +281,8 @@ const GENRES = [
     title: "Mystery/Thriller",
     body: "Keep your readers guessing until the very end. Our editing team meticulous checks plot continuity, red herrings, clue placement, suspense building, and pacing so your twists land with maximum impact.",
     covers: [
-        { src: "/sp-editing-lp/thriller-1.png", alt: "Mystery/Thriller book cover sample" },
-        { src: "/sp-editing-lp/thriller-2.png", alt: "Mystery/Thriller book cover sample" },
+        { src: "/sp-editing-lp/thriller-1.webp", alt: "Mystery/Thriller book cover sample" },
+        { src: "/sp-editing-lp/thriller-2.webp", alt: "Mystery/Thriller book cover sample" },
     ],
   },
   {
@@ -292,8 +292,8 @@ const GENRES = [
     title: "Self-Help",
     body: "Deliver your insights with maximum clarity and authority. We structure your actionable advice, organize chapter flow, eliminate redundancies, and refine your motivational tone so your wisdom inspires and impacts readers.",
     covers: [
-      { src: "/sp-editing-lp/self-1.png", alt: "Self-Help book cover sample" },
-      { src: "/sp-editing-lp/self-2.png", alt: "Self-Help book cover sample" },
+      { src: "/sp-editing-lp/self-1.webp", alt: "Self-Help book cover sample" },
+      { src: "/sp-editing-lp/self-2.webp", alt: "Self-Help book cover sample" },
     ],
   },
   {
@@ -303,8 +303,8 @@ const GENRES = [
     title: "Fantasy",
     body: "Create a magical world readers will want to explore. Our editors refine world-building, character development, plot pacing, and thematic consistency while maintaining your unique voice and creative vision.",
     covers: [
-      { src: "/sp-editing-lp/fant-1.png", alt: "Fantasy book cover sample" },
-      { src: "/sp-editing-lp/fant-2.png", alt: "Fantasy book cover sample" },
+      { src: "/sp-editing-lp/fant-1.webp", alt: "Fantasy book cover sample" },
+      { src: "/sp-editing-lp/fant-2.webp", alt: "Fantasy book cover sample" },
     ],
   },
 ];
@@ -344,13 +344,13 @@ const TESTIMONIALS = [
     author: "Amelia Grant",
     quote:
       "I braced myself for an editor who would flatten my voice, and got the opposite. Every change was tracked, explained, and easy to accept or reject. My novel reads like me — only sharper.",
-    image: "/about-1.jpg",
+    image: "/about-1.webp",
   },
   {
     author: "Mark Ellison",
     quote:
       "The sample edit sold me and the full edit exceeded it. They caught continuity errors my beta readers missed and delivered two days early. My proofread manuscript went straight to my agent.",
-    image: "/about-2.jpg",
+    image: "/about-2.webp",
   },
 ];
 
@@ -926,7 +926,7 @@ function MidPageCta() {
 
           <ScrollReveal variants={fadeIn} className="hidden lg:block">
             <img
-              src="/sp-editing-lp/cta.png"
+              src="/sp-editing-lp/cta.webp"
               alt="Edited manuscript ready for publishing"
               className="-mt-20 w-full max-w-[320px] object-contain"
               loading="lazy"
@@ -1141,7 +1141,7 @@ export default function BookEditingLpPage() {
               aria-label="Stamford Publishers"
             >
               <img
-                src="/sp-editing-lp/logo.png"
+                src="/sp-editing-lp/logo.webp"
                 alt="Stamford Publishers"
                 width={150}
                 height={150}

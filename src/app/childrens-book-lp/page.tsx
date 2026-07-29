@@ -169,14 +169,14 @@ const SERVICE_CARDS = [
 ];
 
 const WORK_CAROUSEL_IMAGES = [
-  { src: "/book-marketing-lp/Graphic-Google.png", alt: "Children's book publishing showcase" },
-  { src: "/book-marketing-lp/Graphic-Google-02.png", alt: "Children's book publishing showcase 2" },
-  { src: "/book-marketing-lp/Graphic-Google-03-1-scaled.png", alt: "Children's book publishing showcase 3" },
-  { src: "/book-marketing-lp/Graphic-Google-07.png", alt: "Children's book publishing showcase 4" },
-  { src: "/book-marketing-lp/Graphic-Google-08.png", alt: "Children's book publishing showcase 5" },
-  { src: "/book-marketing-lp/Graphic-Google-09-scaled.png", alt: "Children's book publishing showcase 6" },
-  { src: "/childrens-book-lp/Graphic-Google-04-669x1024.png", alt: "Children's book cover showcase" },
-  { src: "/childrens-book-lp/Graphic-Google-05-669x1024.png", alt: "Children's book cover showcase 2" },
+  { src: "/book-marketing-lp/Graphic-Google.webp", alt: "Children's book publishing showcase" },
+  { src: "/book-marketing-lp/Graphic-Google-02.webp", alt: "Children's book publishing showcase 2" },
+  { src: "/book-marketing-lp/Graphic-Google-03-1-scaled.webp", alt: "Children's book publishing showcase 3" },
+  { src: "/book-marketing-lp/Graphic-Google-07.webp", alt: "Children's book publishing showcase 4" },
+  { src: "/book-marketing-lp/Graphic-Google-08.webp", alt: "Children's book publishing showcase 5" },
+  { src: "/book-marketing-lp/Graphic-Google-09-scaled.webp", alt: "Children's book publishing showcase 6" },
+  { src: "/childrens-book-lp/Graphic-Google-04-669x1024.webp", alt: "Children's book cover showcase" },
+  { src: "/childrens-book-lp/Graphic-Google-05-669x1024.webp", alt: "Children's book cover showcase 2" },
 ];
 
 const DETAILED_SERVICES = [
@@ -224,14 +224,14 @@ const TESTIMONIALS = [
       "Stamford Publishers turned my bedtime story idea into a beautifully illustrated book my kids are proud of. The team understood the audience and guided me every step of the way.",
     author: "Sarah Mitchell",
     role: "Children's Author",
-    image: "/about-1.jpg",
+    image: "/about-1.webp",
   },
   {
     quote:
       "From illustrations to marketing, everything felt professional and personal. My picture book is now reaching families I never thought I could connect with on my own.",
     author: "James Rodriguez",
     role: "Picture Book Author",
-    image: "/about-2.jpg",
+    image: "/about-2.webp",
   },
 ];
 
@@ -822,7 +822,7 @@ export default function ChildrensBookLpPage() {
               </div>
               <div className="mt-auto flex justify-center">
                 <img
-                  src="/children-book-1.jpg"
+                  src="/children-book-1.webp"
                   alt="Children's book publishing"
                   className="w-full max-w-[280px] rounded-xl object-cover max-h-[200px]"
                 />
@@ -869,7 +869,7 @@ export default function ChildrensBookLpPage() {
           <div className="flex items-center justify-between gap-3 sm:gap-4">
             <a href="#" className="shrink-0 transition-opacity duration-300 hover:opacity-80" aria-label="Stamford Publishers">
               <img
-                src="/childrens-book-lp/logo.png"
+                src="/childrens-book-lp/logo.webp"
                 alt="Stamford Publishers"
                 width={150}
                 height={150}
@@ -889,7 +889,7 @@ export default function ChildrensBookLpPage() {
       <div>
         {/* Hero */}
         <section
-          className="relative overflow-hidden bg-[url('/childrens-book-lp/hero.jpg')] bg-cover bg-center bg-no-repeat pt-20 pb-10 sm:pt-24 sm:pb-12 lg:pt-32 lg:pb-20"
+          className="relative overflow-hidden bg-[url('/childrens-book-lp/hero.webp')] bg-cover bg-center bg-no-repeat pt-20 pb-10 sm:pt-24 sm:pb-12 lg:pt-32 lg:pb-20"
           aria-labelledby="cb-hero-heading"
         >
           <div className={`${CONTAINER} relative z-10`}>
@@ -978,7 +978,7 @@ export default function ChildrensBookLpPage() {
 
         {/* Feature focus — teal */}
         <section
-          className="bg-[url('/childrens-book-lp/bg-2.jpg')] bg-cover bg-center bg-no-repeat py-12 sm:py-20 lg:py-28"
+          className="bg-[url('/childrens-book-lp/bg-2.webp')] bg-cover bg-center bg-no-repeat py-12 sm:py-20 lg:py-28"
           aria-labelledby="cb-leading-heading"
         >
           <div className={CONTAINER}>
@@ -1015,7 +1015,7 @@ export default function ChildrensBookLpPage() {
               </MotionColumn>
               <MotionColumn from="right">
                 <img
-                  src="/childrens-book-lp/sec-2-img.jpg"
+                  src="/childrens-book-lp/sec-2-img.webp"
                   alt="Child discovering books in a library"
                   className="h-[280px] w-full rounded-2xl object-cover shadow-lg transition-transform duration-500 hover:scale-[1.02] sm:h-[380px] lg:h-[500px]"
                 />
@@ -1030,7 +1030,7 @@ export default function ChildrensBookLpPage() {
             <div className="grid items-center gap-8 lg:grid-cols-2 lg:gap-14">
               <MotionColumn from="left" className="order-2 lg:order-1">
                 <img
-                  src="/childrens-book-lp/global-sec.jpg"
+                  src="/childrens-book-lp/global-sec.webp"
                   alt="Young child reading a colorful picture book"
                   className="h-[280px] w-full rounded-2xl border-4 border-[#8C24A9]/20 object-cover shadow-lg transition-transform duration-500 hover:scale-[1.02] sm:h-[380px] lg:h-[500px]"
                 />
@@ -1082,7 +1082,7 @@ export default function ChildrensBookLpPage() {
         {/* Services grid — teal soft */}
         <section
           id="services"
-          className="bg-[url('/childrens-book-lp/bg-2.jpg')] bg-cover bg-center bg-no-repeat py-12 sm:py-20 lg:py-28"
+          className="bg-[url('/childrens-book-lp/bg-2.webp')] bg-cover bg-center bg-no-repeat py-12 sm:py-20 lg:py-28"
           aria-labelledby="cb-services-heading"
         >
           <div className={CONTAINER}>
@@ -1129,7 +1129,7 @@ export default function ChildrensBookLpPage() {
         {/* Mid-page CTA — yellow */}
         <section
           id="mid-cta"
-          className={`${SECTION_PADDING} relative overflow-hidden bg-[url('/childrens-book-lp/bg-4.png')] bg-cover bg-center bg-no-repeat md:bg-fixed`}
+          className={`${SECTION_PADDING} relative overflow-hidden bg-[url('/childrens-book-lp/bg-4.webp')] bg-cover bg-center bg-no-repeat md:bg-fixed`}
           aria-labelledby="cb-mid-cta-heading"
         >
           <div className={`${CONTAINER} relative z-10 text-center`}>
@@ -1178,7 +1178,7 @@ export default function ChildrensBookLpPage() {
 
         {/* Showcase — teal */}
         <section
-          className={`${SECTION_PADDING} bg-[url('/childrens-book-lp/bg-2.jpg')] bg-cover bg-center bg-no-repeat md:bg-fixed`}
+          className={`${SECTION_PADDING} bg-[url('/childrens-book-lp/bg-2.webp')] bg-cover bg-center bg-no-repeat md:bg-fixed`}
           aria-labelledby="cb-showcase-heading"
         >
           <div className={CONTAINER}>
@@ -1198,7 +1198,7 @@ export default function ChildrensBookLpPage() {
               </MotionColumn>
               <MotionColumn from="right">
                 <img
-                  src="/childrens-book-lp/showcase-1.png"
+                  src="/childrens-book-lp/showcase-1.webp"
                   alt="Children's book mockup showcase"
                   className="mx-auto w-full max-w-md object-contain transition-transform duration-500 hover:scale-[1.02] sm:-my-12 lg:-my-24"
                 />
@@ -1243,14 +1243,14 @@ export default function ChildrensBookLpPage() {
 
         {/* Secondary CTA — yellow */}
         <section
-          className={`${SECTION_PADDING} bg-[url('/childrens-book-lp/bg-4.png')] bg-cover bg-center bg-no-repeat md:bg-fixed`}
+          className={`${SECTION_PADDING} bg-[url('/childrens-book-lp/bg-4.webp')] bg-cover bg-center bg-no-repeat md:bg-fixed`}
           aria-labelledby="cb-idea-heading"
         >
           <div className={CONTAINER}>
             <div className="grid items-center gap-8 lg:grid-cols-2 lg:gap-14">
               <MotionColumn from="left" className="order-2 lg:order-1">
                 <img
-                  src="/childrens-book-lp/showcase-2.png"
+                  src="/childrens-book-lp/showcase-2.webp"
                   alt="Children's book mockup showcase"
                   className="mx-auto w-full object-contain transition-transform duration-500 hover:scale-[1.02] sm:-my-12 lg:-my-24"
                 />
@@ -1380,7 +1380,7 @@ export default function ChildrensBookLpPage() {
           <div style={{ backgroundColor: PURPLE }}>
             <div className={CONTAINER}>
               <img
-                src="/childrens-book-lp/footer-top-1.png"
+                src="/childrens-book-lp/footer-top-1.webp"
                 alt="Publishing partners"
                 className="w-full object-contain py-6 sm:py-8 lg:py-10"
               />
@@ -1394,7 +1394,7 @@ export default function ChildrensBookLpPage() {
             <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 lg:gap-12">
               <ScrollReveal>
                 <img
-                  src="/childrens-book-lp/logo.png"
+                  src="/childrens-book-lp/logo.webp"
                   alt="Stamford Publishers"
                   className="mb-5 w-40 transition-transform duration-300 hover:scale-105 sm:w-48"
                 />
@@ -1431,7 +1431,7 @@ export default function ChildrensBookLpPage() {
                     className="w-20 object-contain transition-transform duration-300 hover:scale-105 sm:w-24"
                   />
                   <img
-                    src="/childrens-book-lp/google.png"
+                    src="/childrens-book-lp/google.webp"
                     alt="Google Reviews rating"
                     className="w-20 object-contain transition-transform duration-300 hover:scale-105 sm:w-24"
                   />

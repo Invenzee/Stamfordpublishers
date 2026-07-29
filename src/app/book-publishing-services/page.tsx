@@ -101,7 +101,7 @@ export default function BookPublishingServicesPage() {
         btn1Text="Book A Free Consultation"
         btn2Text="Call Now"
         btn2Href="tel:+15625732551"
-        imageSrc="/about-1.jpg"
+        imageSrc="/about-1.webp"
         imageAlt="Author reading in a library"
         imageVariant="full"
         showForm
@@ -116,7 +116,7 @@ export default function BookPublishingServicesPage() {
         equalColumns
         className="bg-primary-light/40"
         image={{
-          src: "/hero-image-1.jpg",
+          src: "/hero-image-1.webp",
           alt: "Author writing at a desk",
         }}
         customContent={

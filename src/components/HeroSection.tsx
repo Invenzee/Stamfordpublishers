@@ -61,7 +61,7 @@ export default function HeroSection({
   btn2Icon: Btn2Icon = FaPhone,
   btn2Href = "tel:+18001234567",
   btn2OnClick,
-  imageSrc = "/homepage-hero.png",
+  imageSrc = "/homepage-hero.webp",
   imageAlt = "Published Book Cover",
   blobColor = "#59101B",
   imageVariant = "book",

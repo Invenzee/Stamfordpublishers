@@ -56,7 +56,7 @@ const PROMO_CHANNELS = [
     title: "Social Media Marketing",
     description:
       "We put your book in front of readers where they already spend their time. Through precision-targeted campaigns on Facebook, Instagram, and LinkedIn, we connect your story to the audiences most likely to engage with it — turning casual scrollers into engaged readers and buyers.",
-    image: "/book-marketing-lp/social-media.jpg",
+    image: "/book-marketing-lp/social-media.webp",
     imageAlt: "Social media marketing for book promotion",
   },
   {
@@ -65,7 +65,7 @@ const PROMO_CHANNELS = [
     title: "Search Engine Optimization",
     description:
       "Readers can’t buy a book they can’t find. We research the keywords, categories, and search terms your ideal readers are actually using, then apply them across your book’s metadata, listing copy, and author website. The result is stronger organic rankings on Amazon and Google alike, so your book keeps attracting new readers long after a campaign ends.",
-    image: "/book-marketing-lp/seo.jpg",
+    image: "/book-marketing-lp/seo.webp",
     imageAlt: "Search engine optimization for authors",
   },
   {
@@ -74,7 +74,7 @@ const PROMO_CHANNELS = [
     title: "Amazon Marketing",
     description:
       "Amazon is where most book discovery and buying happens, so we treat your listing as a storefront, not an afterthought. From optimized titles, descriptions, and A+ Content to targeted Amazon Ads and category/bestseller-list positioning, we build a presence designed to convert browsers into buyers and keep your book climbing the rankings that matter.",
-    image: "/book-marketing-lp/amazon.jpg",
+    image: "/book-marketing-lp/amazon.webp",
     imageAlt: "Amazon book marketing campaigns",
   },
   {
@@ -83,7 +83,7 @@ const PROMO_CHANNELS = [
     title: "Content Marketing",
     description:
       "We help authors build authority, not just awareness. Through blog content, author interviews, guest features, and shareable reader-focused pieces, we position you as a voice in your genre — giving readers a reason to follow your work and giving search engines fresh, relevant content to rank.",
-    image: "/book-marketing-lp/content.jpg",
+    image: "/book-marketing-lp/content.webp",
     imageAlt: "Content marketing for book authors",
   },
   {
@@ -92,7 +92,7 @@ const PROMO_CHANNELS = [
     title: "Book Launch Campaigns",
     description:
       "The first weeks after release set the trajectory for a book’s long-term success. We build coordinated launch campaigns — pre-release buzz, review pipelines, launch-day promotion, and post-launch momentum — timed to drive the concentrated sales and visibility that can push a title onto bestseller lists.",
-    image: "/book-marketing-lp/book.jpg",
+    image: "/book-marketing-lp/book.webp",
     imageAlt: "Book launch marketing campaign",
   },
   {
@@ -101,7 +101,7 @@ const PROMO_CHANNELS = [
     title: "Influencer Marketing",
     description:
       "We connect your book with bookstagrammers, BookTokers, YouTube reviewers, and genre-specific influencers who already have your readers’ attention. These partnerships generate authentic reviews, unboxings, and recommendations that build trust and buzz in ways traditional advertising can’t replicate.",
-    image: "/book-marketing-lp/influencer.jpg",
+    image: "/book-marketing-lp/influencer.webp",
     imageAlt: "Influencer marketing for book authors",
   },
 ];
@@ -269,12 +269,12 @@ function LpButton({
 }
 
 const WORK_CAROUSEL_IMAGES = [
-  { src: "/book-marketing-lp/Graphic-Google.png", alt: "Book marketing campaign showcase" },
-  { src: "/book-marketing-lp/Graphic-Google-02.png", alt: "Book marketing campaign showcase 2" },
-  { src: "/book-marketing-lp/Graphic-Google-03-1-scaled.png", alt: "Book marketing campaign showcase 3" },
-  { src: "/book-marketing-lp/Graphic-Google-07.png", alt: "Book marketing campaign showcase 4" },
-  { src: "/book-marketing-lp/Graphic-Google-08.png", alt: "Book marketing campaign showcase 5" },
-  { src: "/book-marketing-lp/Graphic-Google-09-scaled.png", alt: "Book marketing campaign showcase 6" },
+  { src: "/book-marketing-lp/Graphic-Google.webp", alt: "Book marketing campaign showcase" },
+  { src: "/book-marketing-lp/Graphic-Google-02.webp", alt: "Book marketing campaign showcase 2" },
+  { src: "/book-marketing-lp/Graphic-Google-03-1-scaled.webp", alt: "Book marketing campaign showcase 3" },
+  { src: "/book-marketing-lp/Graphic-Google-07.webp", alt: "Book marketing campaign showcase 4" },
+  { src: "/book-marketing-lp/Graphic-Google-08.webp", alt: "Book marketing campaign showcase 5" },
+  { src: "/book-marketing-lp/Graphic-Google-09-scaled.webp", alt: "Book marketing campaign showcase 6" },
 ];
 
 const TESTIMONIALS = [
@@ -586,7 +586,7 @@ export default function BookMarketingLpPage() {
 
             <div className="mt-auto flex justify-center pt-4">
               <img
-                src="/book-marketing-lp/popup.png"
+                src="/book-marketing-lp/popup.webp"
                 alt="Author using smartphone for book marketing"
                 className="w-full max-w-[300px] object-contain"
               />
@@ -687,7 +687,7 @@ export default function BookMarketingLpPage() {
             aria-label="Stamford Publishers"
           >
             <img
-              src="/book-marketing-lp/logo.png"
+              src="/book-marketing-lp/logo.webp"
               alt="Stamford Publishers"
               width={100}
               height={100}
@@ -708,7 +708,7 @@ export default function BookMarketingLpPage() {
             aria-hidden="true"
           />
           <img
-            src="/book-marketing-lp/Bannerrr%20(2).jpg"
+            src="/book-marketing-lp/Bannerrr%20(2).webp"
             alt=""
             className="absolute bottom-0 left-0 right-0 z-0 block w-full h-auto opacity-80 pointer-events-none object-contain object-bottom"
             aria-hidden="true"
@@ -901,7 +901,7 @@ export default function BookMarketingLpPage() {
               <div className="flex-[1.5] flex items-center justify-center shrink-0">
                 <div className="w-52 h-52 xl:w-full xl:h-[450px] border-2 border-[#ffc800] rounded-full bg-white flex items-center justify-center shadow-[0_0_50px_rgba(255,200,0,0.35)] transition-all duration-300 hover:shadow-[0_0_60px_rgba(255,200,0,0.45)]">
                   <img
-                    src="/book-marketing-lp/logo.png"
+                    src="/book-marketing-lp/logo.webp"
                     alt="Stamford Publishers"
                     width={140}
                     height={140}
@@ -927,7 +927,7 @@ export default function BookMarketingLpPage() {
               <div className="flex justify-center mb-10">
                 <div className="w-44 h-44 rounded-full bg-white flex items-center justify-center shadow-[0_0_50px_rgba(255,200,0,0.35)] transition-all duration-300">
                   <img
-                    src="/book-marketing-lp/logo.png"
+                    src="/book-marketing-lp/logo.webp"
                     alt="Stamford Publishers"
                     width={120}
                     height={120}
@@ -1343,7 +1343,7 @@ function WhyMarketingSection({ sectionId }: { sectionId: string }) {
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <div className="relative flex justify-center lg:justify-start min-h-0 lg:min-h-[420px]">
               <img
-                src="/book-marketing-lp/girlwithtablet.png"
+                src="/book-marketing-lp/girlwithtablet.webp"
                 alt="Author reviewing book marketing on a tablet"
                 className="relative lg:absolute lg:-top-24 lg:left-10 z-[5] w-full max-w-[260px] sm:max-w-[300px] lg:max-w-[400px] h-auto mx-auto lg:mx-0 transition-all duration-300"
               />
