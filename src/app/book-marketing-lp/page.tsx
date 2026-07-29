@@ -1,7 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState, type ReactNode } from "react";
+import { createPortal } from "react-dom";
 import {
+  FaComments,
   FaEnvelope,
   FaFacebookF,
   FaInstagram,
@@ -14,8 +16,8 @@ import {
 const PHONE = "+1 562 573 2551";
 const PHONE_HREF = "tel:+15625732551";
 const EMAIL = "info@stamfordpublishers.com";
-const POPUP_DELAY_MS = 30000;
-const POPUP_SESSION_KEY = "book-marketing-lp-popup-closed";
+const POPUP_DELAY_MS = 2000;
+const POPUP_SESSION_KEY = "book-marketing-lp-popup-dismissed";
 
 const GENRE_OPTIONS = [
   "Fiction",
@@ -133,58 +135,171 @@ const EXECUTION_STEPS = [
 const WHY_CHOOSE = [
   {
     number: "01",
-    title: "Personally Backed Strategy",
+    title: "Research-Backed Strategy",
     description:
-      "Every author receives a dedicated strategist who understands your book and tailors every campaign to your unique goals.",
+      "Every campaign starts with research, not guesswork. We study your book, your audience, and your competition before a single dollar is spent on promotion.",
   },
   {
     number: "02",
     title: "Proven Results",
     description:
-      "Our team has supported hundreds of authors across genres, building campaigns that improve visibility and reader engagement.",
+      "Our team has supported hundreds of authors across genres, building campaigns that improve visibility, reader engagement, and long-term sales momentum.",
   },
   {
     number: "03",
-    title: "Dedicated & Ongoing Support",
+    title: "Dedicated Ongoing Support",
     description:
-      "From launch day to long-term promotion, we stay with you — answering questions, adjusting strategy, and reporting on progress.",
+      "From launch day to long-term promotion, we stay with you — answering questions, adjusting strategy, and reporting on progress every step of the way.",
   },
 ];
 
-const PACKAGE_FEATURES = [
-  "Social media setup and management",
-  "Email campaign creation",
-  "Amazon & Google ad setup",
-  "Press release writing",
-  "Author website landing page",
-  "Monthly performance report",
-  "Dedicated account manager",
-  "Content calendar planning",
+const MARKETING_PACKAGES = [
+  {
+    name: "Starter Plan",
+    features: [
+      "Social media setup and management",
+      "Email campaign creation",
+      "Amazon & Google ad setup",
+      "Press release writing",
+      "Author website landing page",
+      "Monthly performance report",
+      "Dedicated account manager",
+      "Content calendar planning",
+    ],
+  },
+  {
+    name: "Growth Plan",
+    features: [
+      "Everything in Starter Plan",
+      "Influencer outreach campaigns",
+      "Advanced Amazon advertising",
+      "Book launch strategy & timeline",
+      "Reader review generation support",
+      "Multi-platform ad management",
+      "Bi-weekly strategy calls",
+      "Competitive market analysis",
+    ],
+  },
+  {
+    name: "Premium Plan",
+    features: [
+      "Everything in Growth Plan",
+      "Full-service PR & media outreach",
+      "Podcast & interview booking",
+      "Custom video ad creatives",
+      "Priority campaign optimization",
+      "Dedicated senior strategist",
+      "Quarterly growth planning",
+      "Priority support & reporting",
+    ],
+  },
 ];
 
-const WORK_COVERS = [
-  { src: "/children-book-1.jpg", alt: "Children's book cover" },
-  { src: "/children-book-2.jpg", alt: "Children's book cover design" },
-  { src: "/children-book-3.jpg", alt: "Illustrated children's book" },
-  { src: "/audiobook-2.jpg", alt: "Fiction book cover" },
-  { src: "/audiobook-3.jpg", alt: "Non-fiction book cover" },
-  { src: "/audiobook-4.jpg", alt: "Published book showcase" },
+const PHONE_DISPLAY = "(562) 573-2551";
+
+const FOOTER_FIELD_CLASS =
+  "w-full px-4 py-2.5 border border-black/10 rounded-lg outline-none focus:border-[#ffc800] bg-[#B3B5A1] text-white placeholder:text-white text-sm transition-all duration-300";
+
+const FOOTER_SELECT_CLASS = `${FOOTER_FIELD_CLASS} appearance-none bg-[url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2712%27 height=%278%27 viewBox=%270 0 12 8%27%3E%3Cpath fill=%27%23fff%27 d=%27M1 1l5 5 5-5%27/%3E%3C/svg%3E')] bg-no-repeat bg-[right_1rem_center] pr-10`;
+
+const FOOTER_BADGES = {
+  dmca: "/book-marketing-lp/dmc%20(1).webp",
+  payments: "/book-marketing-lp/pay-1.webp",
+  trustpilot: "/book-marketing-lp/trustpilot-1.webp",
+};
+
+const POPUP_FIELD_CLASS =
+  "w-full px-4 py-2.5 border border-[#d9d9d9] rounded-lg bg-white text-[#111] text-sm outline-none focus:border-[#ffc800] placeholder:text-[#aaa] transition-all duration-300";
+
+const POPUP_SELECT_CLASS = `${POPUP_FIELD_CLASS} appearance-none bg-[url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2712%27 height=%278%27 viewBox=%270 0 12 8%27%3E%3Cpath fill=%27%23999%27 d=%27M1 1l5 5 5-5%27/%3E%3C/svg%3E')] bg-no-repeat bg-[right_1rem_center] pr-10`;
+
+const SECTION_HEADING =
+  "text-2xl sm:text-3xl lg:text-5xl font-bold transition-all duration-300";
+
+const SECTION_PADDING = "py-12 lg:py-16 transition-all duration-300";
+
+const CARD_HOVER =
+  "transition-all duration-300 ease-out hover:shadow-lg hover:-translate-y-1";
+
+const HERO_FIELD_CLASS =
+  "w-full px-4 py-2 border border-black/10 rounded-lg outline-none focus:border-[#ffc800] bg-[#B3B5A1] text-white placeholder:text-white transition-all duration-300";
+
+const HERO_SELECT_CLASS = `${HERO_FIELD_CLASS} appearance-none pr-10 bg-[url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2712%27 height=%278%27 viewBox=%270 0 12 8%27%3E%3Cpath fill=%27%23fff%27 d=%27M1 1l5 5 5-5%27/%3E%3C/svg%3E')] bg-no-repeat bg-[right_1rem_center]`;
+
+const LP_BTN_BASE =
+  "group relative inline-flex items-center justify-center gap-2 overflow-hidden bg-[#ffc800] text-[#111] font-bold transition-all duration-300 hover:text-white";
+
+function LpButton({
+  children,
+  href,
+  type = "button",
+  className = "",
+  onClick,
+}: {
+  children: ReactNode;
+  href?: string;
+  type?: "button" | "submit";
+  className?: string;
+  onClick?: () => void;
+}) {
+  const classes = `${LP_BTN_BASE} ${className}`;
+
+  if (href) {
+    return (
+      <a href={href} className={classes}>
+        <span
+          className="absolute inset-0 bg-[#111] rounded-[inherit] scale-x-0 origin-left transition-transform duration-[400ms] ease-[cubic-bezier(0.4,0,0.2,1)] group-hover:scale-x-100"
+          aria-hidden="true"
+        />
+        <span className="relative z-10">{children}</span>
+      </a>
+    );
+  }
+
+  return (
+    <button type={type} onClick={onClick} className={classes}>
+      <span
+        className="absolute inset-0 bg-[#111] rounded-[inherit] scale-x-0 origin-left transition-transform duration-[400ms] ease-[cubic-bezier(0.4,0,0.2,1)] group-hover:scale-x-100"
+        aria-hidden="true"
+      />
+      <span className="relative z-10">{children}</span>
+    </button>
+  );
+}
+
+const WORK_CAROUSEL_IMAGES = [
+  { src: "/book-marketing-lp/Graphic-Google.png", alt: "Book marketing campaign showcase" },
+  { src: "/book-marketing-lp/Graphic-Google-02.png", alt: "Book marketing campaign showcase 2" },
+  { src: "/book-marketing-lp/Graphic-Google-03-1-scaled.png", alt: "Book marketing campaign showcase 3" },
+  { src: "/book-marketing-lp/Graphic-Google-07.png", alt: "Book marketing campaign showcase 4" },
+  { src: "/book-marketing-lp/Graphic-Google-08.png", alt: "Book marketing campaign showcase 5" },
+  { src: "/book-marketing-lp/Graphic-Google-09-scaled.png", alt: "Book marketing campaign showcase 6" },
 ];
 
 const TESTIMONIALS = [
   {
-    title: "The Best Service",
     quote:
       "Stamford Publishers transformed how my book reached readers. Their marketing team understood my audience and built campaigns that genuinely moved the needle. I saw more reviews, more sales, and more engagement within the first month.",
     author: "Sarah Mitchell",
     role: "Independent Author",
   },
   {
-    title: "The Best Service",
     quote:
       "I was overwhelmed by book marketing until I partnered with Stamford Publishers. They handled social media, email outreach, and Amazon ads while keeping me informed every step of the way. Professional, responsive, and results-driven.",
     author: "James Rodriguez",
     role: "Non-Fiction Author",
+  },
+  {
+    quote:
+      "From our first strategy call to post-launch reporting, communication was clear and honest. They helped me promote a backlist title I thought was done — and it found a whole new audience.",
+    author: "Emily Carter",
+    role: "Romance Author",
+  },
+  {
+    quote:
+      "As a debut author, I needed guidance I could trust. Stamford Publishers broke everything down in plain language and delivered campaigns that matched my goals without overselling or overpromising.",
+    author: "David Park",
+    role: "Business Author",
   },
 ];
 
@@ -192,9 +307,196 @@ function handleFormSubmit(e: React.FormEvent) {
   e.preventDefault();
 }
 
+function WorksCarousel() {
+  const gapPx = 16;
+  const [visibleCount, setVisibleCount] = useState(1);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  useEffect(() => {
+    const update = () => {
+      if (window.matchMedia("(min-width: 1024px)").matches) {
+        setVisibleCount(5);
+      } else if (window.matchMedia("(min-width: 640px)").matches) {
+        setVisibleCount(2);
+      } else {
+        setVisibleCount(2);
+      }
+    };
+
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
+
+  const maxIndex = Math.max(0, WORK_CAROUSEL_IMAGES.length - visibleCount);
+
+  useEffect(() => {
+    setActiveIndex((prev) => Math.min(prev, maxIndex));
+  }, [maxIndex]);
+
+  const goTo = useCallback(
+    (index: number) => {
+      setActiveIndex(Math.max(0, Math.min(index, maxIndex)));
+    },
+    [maxIndex],
+  );
+
+  const cardWidth = `calc((100% - ${(visibleCount - 1) * gapPx}px) / ${visibleCount})`;
+  const slideOffset = `calc(-${activeIndex} * (${cardWidth} + ${gapPx}px))`;
+  const dotCount = maxIndex + 1;
+
+  return (
+    <div aria-label="Our works carousel">
+      <div className="overflow-hidden">
+        <div
+          className="flex transition-transform duration-500 ease-out"
+          style={{
+            gap: `${gapPx}px`,
+            transform: `translateX(${slideOffset})`,
+          }}
+        >
+          {WORK_CAROUSEL_IMAGES.map((image) => (
+            <div
+              key={image.src}
+              className="shrink-0 rounded-xl overflow-hidden shadow-md bg-white transition-all duration-300 ease-out hover:shadow-xl hover:-translate-y-1"
+              style={{ width: cardWidth }}
+            >
+              <img
+                src={image.src}
+                alt={image.alt}
+                className="w-full h-auto object-cover"
+                loading="lazy"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {dotCount > 1 && (
+        <div
+          className="mt-6 flex items-center justify-center gap-2"
+          role="tablist"
+          aria-label="Carousel navigation"
+        >
+          {Array.from({ length: dotCount }).map((_, index) => (
+            <button
+              key={index}
+              type="button"
+              role="tab"
+              aria-selected={activeIndex === index}
+              aria-label={`Go to slide ${index + 1}`}
+              onClick={() => goTo(index)}
+              className={`transition-all duration-300 rounded-full ${activeIndex === index
+                  ? "h-2.5 w-8 bg-[#ffc800]"
+                  : "h-2.5 w-2.5 bg-[#d4d4d4] hover:bg-[#bbb]"
+                }`}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function TestimonialsCarousel() {
+  const gapPx = 20;
+  const [visibleCount, setVisibleCount] = useState(1);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  useEffect(() => {
+    const update = () => {
+      if (window.matchMedia("(min-width: 1024px)").matches) {
+        setVisibleCount(2);
+      } else {
+        setVisibleCount(1);
+      }
+    };
+
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
+
+  const maxIndex = Math.max(0, TESTIMONIALS.length - visibleCount);
+
+  useEffect(() => {
+    setActiveIndex((prev) => Math.min(prev, maxIndex));
+  }, [maxIndex]);
+
+  const goTo = useCallback(
+    (index: number) => {
+      setActiveIndex(Math.max(0, Math.min(index, maxIndex)));
+    },
+    [maxIndex],
+  );
+
+  const cardWidth = `calc((100% - ${(visibleCount - 1) * gapPx}px) / ${visibleCount})`;
+  const slideOffset = `calc(-${activeIndex} * (${cardWidth} + ${gapPx}px))`;
+  const dotCount = maxIndex + 1;
+
+  return (
+    <div aria-label="Author testimonials carousel">
+      <div className="overflow-hidden">
+        <div
+          className="flex transition-transform duration-500 ease-out"
+          style={{
+            gap: `${gapPx}px`,
+            transform: `translateX(${slideOffset})`,
+          }}
+        >
+          {TESTIMONIALS.map((item) => (
+            <article
+              key={item.author}
+              className="shrink-0 flex flex-col bg-[#FFF2C2] rounded-[20px] p-6 lg:p-8 shadow-[0_8px_24px_rgba(255,200,0,0.15)] border border-[#ffc800]/20 transition-all duration-300 ease-out hover:shadow-[0_12px_32px_rgba(255,200,0,0.25)] hover:-translate-y-1"
+              style={{ width: cardWidth }}
+            >
+              <div className="flex gap-0.5 mb-4 text-[#ffc800]" aria-label="5 out of 5 stars">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <FaStar key={i} className="w-4 h-4" aria-hidden="true" />
+                ))}
+              </div>
+              <p className="text-sm sm:text-[15px] text-[#111] leading-relaxed mb-6 flex-1">
+                &ldquo;{item.quote}&rdquo;
+              </p>
+              <div className="border-t border-[#ffc800]/35 pt-4">
+                <p className="font-bold text-[#111] text-sm">{item.author}</p>
+                <p className="text-xs text-[#666] mt-0.5">{item.role}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      {dotCount > 1 && (
+        <div
+          className="mt-8 flex items-center justify-center gap-2"
+          role="tablist"
+          aria-label="Testimonials carousel navigation"
+        >
+          {Array.from({ length: dotCount }).map((_, index) => (
+            <button
+              key={index}
+              type="button"
+              role="tab"
+              aria-selected={activeIndex === index}
+              aria-label={`Go to testimonial slide ${index + 1}`}
+              onClick={() => goTo(index)}
+              className={`transition-all duration-300 rounded-full ${activeIndex === index
+                  ? "h-2.5 w-8 bg-[#ffc800]"
+                  : "h-2.5 w-2.5 bg-[#ffc800]/35 hover:bg-[#ffc800]/55"
+                }`}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function BookMarketingLpPage() {
   const [activeChannel, setActiveChannel] = useState(PROMO_CHANNELS[0].id);
   const [popupOpen, setPopupOpen] = useState(false);
+  const [popupMounted, setPopupMounted] = useState(false);
   const [headerScrolled, setHeaderScrolled] = useState(false);
 
   const activePromo = PROMO_CHANNELS.find((c) => c.id === activeChannel) ?? PROMO_CHANNELS[0];
@@ -207,7 +509,17 @@ export default function BookMarketingLpPage() {
   }, []);
 
   useEffect(() => {
-    if (sessionStorage.getItem(POPUP_SESSION_KEY)) return;
+    setPopupMounted(true);
+  }, []);
+
+  useEffect(() => {
+    let dismissed = false;
+    try {
+      dismissed = sessionStorage.getItem(POPUP_SESSION_KEY) === "1";
+    } catch {
+      dismissed = false;
+    }
+    if (dismissed) return;
 
     const timer = window.setTimeout(() => {
       setPopupOpen(true);
@@ -218,48 +530,172 @@ export default function BookMarketingLpPage() {
 
   const closePopup = () => {
     setPopupOpen(false);
-    sessionStorage.setItem(POPUP_SESSION_KEY, "1");
+    try {
+      sessionStorage.setItem(POPUP_SESSION_KEY, "1");
+    } catch {
+      // ignore storage errors
+    }
   };
+
+  const popupModal =
+    popupOpen && popupMounted ? (
+      <div
+        className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/55 backdrop-blur-sm transition-opacity duration-300"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="lp-popup-heading"
+      >
+        <div className="relative grid w-full max-w-[920px] max-h-[80vh] overflow-hidden shadow-[0_24px_64px_rgba(0,0,0,0.25)] md:grid-cols-[42%_58%] bg-white transition-all duration-300">
+          <div className="bg-[#ffc800] lg:p-6 flex flex-col min-h-[360px]">
+            <h2
+              id="lp-popup-heading"
+              className={`${SECTION_HEADING} leading-[1.25] text-[#111] mb-2`}
+            >
+              Turn Your Book Into a Bestseller With Stamford Publishers
+            </h2>
+
+            <div className="space-y-2 text-sm text-[#111] mb-6">
+              <div className="flex items-start gap-3">
+                <FaPhone className="w-4 h-4 mt-1 shrink-0" aria-hidden="true" />
+                <div>
+                  <h3 className="font-bold">Call Us</h3>
+                  <a href={PHONE_HREF} className="hover:underline">
+                    {PHONE_DISPLAY}
+                  </a>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <FaEnvelope className="w-4 h-4 mt-1 shrink-0" aria-hidden="true" />
+                <div>
+                  <h3 className="font-bold">Discuss your ideas</h3>
+                  <a href={`mailto:${EMAIL}`} className="hover:underline break-all">
+                    {EMAIL}
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-auto flex justify-center pt-4">
+              <img
+                src="/book-marketing-lp/popup.png"
+                alt="Author using smartphone for book marketing"
+                className="w-full max-w-[300px] object-contain"
+              />
+            </div>
+          </div>
+
+          <div className="p-7 sm:p-8 lg:p-10 relative overflow-y-auto">
+            <button
+              type="button"
+              onClick={closePopup}
+              className="absolute top-4 right-4 w-7 h-7 flex items-center justify-center bg-[#111] text-white hover:bg-[#333] transition-colors"
+              aria-label="Close popup"
+            >
+              <FaXmark className="w-3.5 h-3.5" />
+            </button>
+
+            <form
+              onSubmit={(e) => {
+                handleFormSubmit(e);
+                closePopup();
+              }}
+              className="space-y-5 pt-1 flex flex-col items-center justify-center"
+            >
+              <div className="grid grid-cols-2 gap-3">
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="Name"
+                  required
+                  className={POPUP_FIELD_CLASS}
+                />
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Email"
+                  required
+                  className={POPUP_FIELD_CLASS}
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <input
+                  type="tel"
+                  name="phone"
+                  placeholder="123-456-7890"
+                  required
+                  className={POPUP_FIELD_CLASS}
+                />
+                <select name="genre" required className={POPUP_SELECT_CLASS} defaultValue="Audiobook">
+                  {GENRE_OPTIONS.map((g) => (
+                    <option key={g} value={g}>
+                      {g === "Audiobook" ? "Audio Book" : g}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <input
+                type="text"
+                name="bookTitle"
+                placeholder="Book Title"
+                required
+                className={POPUP_FIELD_CLASS}
+              />
+              <textarea
+                name="aboutBook"
+                placeholder="Tell Us About Your Book"
+                required
+                rows={5}
+                className={`${POPUP_FIELD_CLASS} min-h-[130px] resize-y`}
+              />
+              <LpButton type="submit" className="w-full rounded-lg py-2.5 px-6 text-sm uppercase tracking-wide font-normal">
+                Submit Now
+              </LpButton>
+            </form>
+          </div>
+        </div>
+      </div>
+    ) : null;
 
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 ${
-          headerScrolled
+        className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 ${headerScrolled
             ? "bg-white border-b border-[#e5e5e5] shadow-sm"
             : "bg-transparent border-b border-transparent"
-        }`}
+          }`}
       >
-        <div className="max-w-[1140px] mx-auto w-full px-4 py-3 grid grid-cols-[1fr_auto_1fr] items-center gap-3">
-          <a
-            href={PHONE_HREF}
-            className="flex items-center gap-2 text-sm font-medium text-[#111] min-w-0 justify-self-start"
-          >
-            <span className="flex items-center justify-center w-9 h-9 rounded-full bg-[#ffc800] shrink-0">
-              <FaPhone className="w-3.5 h-3.5" aria-hidden="true" />
-            </span>
-            <span className="hidden sm:block">
-              <span className="text-[#666] text-xs block leading-tight">Call Now</span>
-              <span className="font-semibold">{PHONE}</span>
-            </span>
-          </a>
+        <div className="relative max-w-[1140px] mx-auto w-full px-4 py-5">
+          <div className="flex items-center justify-between gap-3">
+            <a
+              href={PHONE_HREF}
+              className="flex items-center gap-2 text-sm font-medium text-[#111] min-w-0 z-10 transition-all duration-300 hover:opacity-80"
+            >
+              <span className="flex items-center justify-center w-9 h-9 rounded-full bg-[#ffc800] shrink-0 transition-colors duration-300 hover:bg-[#111] group">
+                <FaPhone className="w-3.5 h-3.5 transition-colors duration-300 group-hover:text-white" aria-hidden="true" />
+              </span>
+              <span className="hidden sm:block">
+                <span className="text-[#666] text-xs block leading-tight">Call Now</span>
+                <span className="font-semibold">{PHONE}</span>
+              </span>
+            </a>
 
-          <a href="#" className="justify-self-center shrink-0" aria-label="Stamford Publishers">
+            <LpButton href="#lp-hero-form" className="shrink-0 text-xs sm:text-sm px-4 py-2.5 sm:px-6 z-10 rounded-full font-semibold normal-case">
+              Get Started
+            </LpButton>
+          </div>
+
+          <a
+            href="#"
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transition-opacity duration-300 hover:opacity-80"
+            aria-label="Stamford Publishers"
+          >
             <img
               src="/book-marketing-lp/logo.png"
               alt="Stamford Publishers"
               width={100}
               height={100}
-              className="h-14 sm:h-16 w-auto"
+              className="h-12 sm:h-14 lg:h-16 w-auto transition-all duration-300"
             />
-          </a>
-
-          <a
-            href="#lp-hero-form"
-            className="group relative inline-flex items-center justify-center gap-2 shrink-0 text-xs sm:text-sm px-4 py-2.5 sm:px-6 justify-self-end rounded-full overflow-hidden bg-[#ffc800] text-[#111] font-semibold transition-colors duration-300 hover:text-white normal-case"
-          >
-            <span className="absolute inset-0 bg-[#111] rounded-full scale-x-0 origin-left transition-transform duration-[400ms] ease-[cubic-bezier(0.4,0,0.2,1)] group-hover:scale-x-100" aria-hidden="true" />
-            <span className="relative z-10">Get Started</span>
           </a>
         </div>
       </header>
@@ -267,7 +703,7 @@ export default function BookMarketingLpPage() {
       <div>
         {/* Hero */}
         <section
-          className="relative pt-12 bg-[#fff8e6] min-h-[780px]"
+          className="relative pt-12 bg-[#fff8e6] min-h-[600px] sm:min-h-[700px] lg:min-h-[780px] transition-all duration-300 overflow-hidden"
           aria-labelledby="lp-hero-heading"
         >
           <div
@@ -288,7 +724,7 @@ export default function BookMarketingLpPage() {
             <div className="text-center max-w-5xl mx-auto">
               <h1
                 id="lp-hero-heading"
-                className="text-3xl sm:text-4xl lg:text-6xl font-bold leading-tight text-[#111] mb-2"
+                className="text-2xl sm:text-3xl lg:text-5xl font-bold leading-tight text-[#111] mb-2 transition-all duration-300"
               >
                 Turn Your Book Into a Bestseller
               </h1>
@@ -298,7 +734,7 @@ export default function BookMarketingLpPage() {
 
               <ul className="grid sm:grid-cols-2 gap-x-10 gap-y-3 max-w-2xl mx-auto mb-8 sm:mb-10 text-left list-none">
                 {HERO_STATS.map((item) => (
-                  <li key={item} className="flex items-center gap-2.5 text-sm sm:text-[14px] text-[#222] font-medium">
+                  <li key={item} className="flex items-center gap-2.5 text-sm sm:text-[14px] text-[#222] font-medium transition-all duration-300">
                     <span className="flex items-center justify-center w-[22px] h-[22px] shrink-0 bg-[#ffc800] rounded-full text-[11px] font-bold text-[#111]">
                       ✓
                     </span>
@@ -314,25 +750,24 @@ export default function BookMarketingLpPage() {
               className="max-w-3xl mx-auto space-y-3"
             >
               <div className="grid sm:grid-cols-3 gap-3">
-                <input type="text" name="name" placeholder="Name" required className="w-full px-4 py-2 border border-black/10 rounded-lg outline-none focus:border-[#ffc800] bg-[#B3B5A1] text-white placeholder:text-white" />
-                <input type="email" name="email" placeholder="Email" required className="w-full px-4 py-2 border border-black/10 rounded-lg outline-none focus:border-[#ffc800] bg-[#B3B5A1] text-white placeholder:text-white" />
-                <input type="tel" name="phone" placeholder="Your Phone" required className="w-full px-4 py-2 border border-black/10 rounded-lg outline-none focus:border-[#ffc800] bg-[#B3B5A1] text-white placeholder:text-white" />
+                <input type="text" name="name" placeholder="Name" required className={HERO_FIELD_CLASS} />
+                <input type="email" name="email" placeholder="Email" required className={HERO_FIELD_CLASS} />
+                <input type="tel" name="phone" placeholder="Your Phone" required className={HERO_FIELD_CLASS} />
               </div>
               <div className="grid sm:grid-cols-[1fr_1fr_1.4fr] gap-3">
-                <select name="timeline" required className="w-full px-4 py-2 pr-10 border border-black/10 rounded-lg outline-none focus:border-[#ffc800] bg-[#B3B5A1] text-white appearance-none bg-[url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2712%27 height=%278%27 viewBox=%270 0 12 8%27%3E%3Cpath fill=%27%23fff%27 d=%27M1 1l5 5 5-5%27/%3E%3C/svg%3E')] bg-no-repeat bg-[right_1rem_center]" defaultValue="3 Months">
+                <select name="timeline" required className={HERO_SELECT_CLASS} defaultValue="3 Months">
                   {TIMELINE_OPTIONS.map((opt) => (
                     <option key={opt} value={opt}>{opt}</option>
                   ))}
                 </select>
-                <select name="published" required className="w-full px-4 py-2 pr-10 border border-black/10 rounded-lg outline-none focus:border-[#ffc800] bg-[#B3B5A1] text-white appearance-none bg-[url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2712%27 height=%278%27 viewBox=%270 0 12 8%27%3E%3Cpath fill=%27%23fff%27 d=%27M1 1l5 5 5-5%27/%3E%3C/svg%3E')] bg-no-repeat bg-[right_1rem_center]" defaultValue="Yes">
+                <select name="published" required className={HERO_SELECT_CLASS} defaultValue="Yes">
                   {PUBLISHED_OPTIONS.map((opt) => (
                     <option key={opt} value={opt}>{opt}</option>
                   ))}
                 </select>
-                <button type="submit" className="group relative inline-flex items-center justify-center gap-2 w-full px-6 py-3 rounded-full overflow-hidden bg-[#ffc800] text-[#111] font-bold text-sm uppercase tracking-wide transition-colors duration-300 hover:text-white h-[46px] sm:h-auto">
-                  <span className="absolute inset-0 bg-[#111] rounded-full scale-x-0 origin-left transition-transform duration-[400ms] ease-[cubic-bezier(0.4,0,0.2,1)] group-hover:scale-x-100" aria-hidden="true" />
-                  <span className="relative z-10">Submit Now</span>
-                </button>
+                <LpButton type="submit" className="w-full rounded-full px-6 py-3 text-sm uppercase tracking-wide h-[46px] sm:h-auto">
+                  Submit Now
+                </LpButton>
               </div>
             </form>
           </div>
@@ -348,15 +783,15 @@ export default function BookMarketingLpPage() {
         </section>
 
         {/* Publisher trust row */}
-        <section className="py-8 bg-white border-b border-[#eee]" aria-label="Publishing partners">
+        <section className="py-8 bg-white border-b border-[#eee] transition-all duration-300" aria-label="Publishing partners">
           <div className="max-w-[1140px] mx-auto w-full px-4">
-            <div className="flex items-center justify-between gap-4 sm:gap-8">
+            <div className="flex flex-wrap items-center justify-center sm:justify-between gap-6 sm:gap-8">
               {PARTNER_LOGOS.map((logo) => (
                 <img
                   key={logo.src}
                   src={logo.src}
                   alt={logo.alt}
-                  className="h-8 sm:h-10 lg:h-12 w-auto object-contain flex-1 max-w-[22%]"
+                  className="h-8 sm:h-10 lg:h-12 w-auto object-contain flex-1 max-w-[120px] sm:max-w-[22%] transition-all duration-300 hover:opacity-70"
                 />
               ))}
             </div>
@@ -364,19 +799,19 @@ export default function BookMarketingLpPage() {
         </section>
 
         {/* Promotional Channels */}
-        <section className="py-12 lg:py-16 bg-white" aria-labelledby="lp-channels-heading">
+        <section className={`${SECTION_PADDING} bg-white`} aria-labelledby="lp-channels-heading">
           <div className="max-w-[1140px] mx-auto w-full px-4">
             <h2
               id="lp-channels-heading"
-              className="text-2xl sm:text-3xl lg:text-4xl font-bold text-center mb-8 lg:mb-12"
+              className={`${SECTION_HEADING} text-center mb-8 lg:mb-12`}
             >
               Our{" "}
               <span className="text-[#ffc800]">Promotional Channels</span>
             </h2>
 
-            <div className="flex items-start gap-8">
+            <div className="flex flex-col lg:flex-row items-start gap-6 lg:gap-8">
               <nav
-                className="flex lg:flex-col gap-2.5 overflow-x-auto lg:overflow-visible w-[25%] pb-2 lg:pb-0 scrollbar-hide"
+                className="flex flex-wrap lg:flex-col gap-2 w-full lg:w-[25%] lg:pb-0"
                 aria-label="Marketing channels"
               >
                 {PROMO_CHANNELS.map((channel) => (
@@ -384,11 +819,10 @@ export default function BookMarketingLpPage() {
                     key={channel.id}
                     type="button"
                     onClick={() => setActiveChannel(channel.id)}
-                    className={`group relative text-left px-5 py-3 text-sm whitespace-nowrap lg:whitespace-normal rounded-full overflow-hidden transition-colors duration-300 hover:text-white ${
-                      activeChannel === channel.id
+                    className={`group relative text-left px-4 py-2.5 sm:px-5 sm:py-3 text-xs sm:text-sm lg:whitespace-normal rounded-full overflow-hidden transition-colors duration-300 hover:text-white ${activeChannel === channel.id
                         ? "bg-[#ffc800] text-[#111] font-semibold"
                         : "bg-[#fbeccc] text-[#4a2c2a] font-medium"
-                    }`}
+                      }`}
                   >
                     <span className="absolute inset-0 bg-[#111] rounded-full scale-x-0 origin-left transition-transform duration-[400ms] ease-[cubic-bezier(0.4,0,0.2,1)] group-hover:scale-x-100" aria-hidden="true" />
                     <span className="relative z-10">{channel.label}</span>
@@ -396,35 +830,36 @@ export default function BookMarketingLpPage() {
                 ))}
               </nav>
 
-              <div className="relative overflow-hidden rounded-[20px] min-h-[320px] w-[70%] bg-[#fbeccc]">
+              <div className="relative overflow-hidden rounded-[20px] w-full lg:w-[70%] bg-[#fbeccc] transition-all duration-300">
                 <img
                   src={activePromo.image}
                   alt=""
-                  className="absolute inset-0 w-full h-full object-contain object-right pointer-events-none"
+                  className="hidden md:block absolute inset-0 w-full h-full object-contain object-right pointer-events-none transition-opacity duration-500"
                   aria-hidden="true"
                 />
                 <div
-                  className="absolute inset-0 z-[1] pointer-events-none hidden md:block bg-[linear-gradient(to_right,#FBEBCD_65%,transparent_100%)]"
+                  className="absolute inset-0 z-[1] pointer-events-none bg-[linear-gradient(to_bottom,#FBEBCD_0%,#FBEBCD_70%,rgba(251,235,205,0.6)_100%)] md:bg-[linear-gradient(to_right,#FBEBCD_65%,transparent_100%)]"
                   aria-hidden="true"
                 />
-                <div className="relative z-[2] w-full md:w-[80%] md:max-w-[80%] p-6 sm:p-8 lg:p-10 flex flex-col justify-center min-h-[320px]">
-                  <h3 className="text-2xl font-bold text-[#59101B] mb-3 sm:mb-4">
+                <div className="relative z-[2] p-5 sm:p-8 lg:p-10 flex flex-col justify-center">
+                  <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#59101B] mb-3 sm:mb-4 transition-all duration-300">
                     {activePromo.title}
                   </h3>
-                  <p className="text-[#333] text-[14px]! leading-relaxed mb-6 sm:mb-8">
+                  <p className="text-[#333] text-sm sm:text-[14px] leading-relaxed mb-4 sm:mb-6 transition-all duration-300">
                     {activePromo.description}
                   </p>
+                  <img
+                    src={activePromo.image}
+                    alt={activePromo.imageAlt}
+                    className="md:hidden w-full max-h-[180px] object-contain object-center mb-4"
+                  />
                   <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-5">
-                    <a
-                      href="#lp-hero-form"
-                      className="group relative inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full overflow-hidden bg-[#ffc800] text-[#111] font-semibold text-sm transition-colors duration-300 hover:text-white normal-case"
-                    >
-                      <span className="absolute inset-0 bg-[#111] rounded-full scale-x-0 origin-left transition-transform duration-[400ms] ease-[cubic-bezier(0.4,0,0.2,1)] group-hover:scale-x-100" aria-hidden="true" />
-                      <span className="relative z-10">Get A Quote</span>
-                    </a>
-                    <a href={PHONE_HREF} className="flex items-center gap-3 group">
-                      <span className="flex items-center justify-center w-10 h-10 rounded-full bg-[#ffc800] shrink-0 group-hover:bg-[#e6b400] transition-colors">
-                        <FaPhone className="w-4 h-4 text-[#111]" aria-hidden="true" />
+                    <LpButton href="#lp-hero-form" className="px-6 py-3 rounded-full font-semibold text-sm normal-case">
+                      Get A Quote
+                    </LpButton>
+                    <a href={PHONE_HREF} className="flex items-center gap-3 group transition-all duration-300">
+                      <span className="flex items-center justify-center w-10 h-10 rounded-full bg-[#ffc800] shrink-0 group-hover:bg-[#111] transition-colors duration-300">
+                        <FaPhone className="w-4 h-4 text-[#111] group-hover:text-white transition-colors duration-300" aria-hidden="true" />
                       </span>
                       <span className="text-sm leading-tight">
                         <span className="text-[#666] text-xs block">Call Now</span>
@@ -442,21 +877,21 @@ export default function BookMarketingLpPage() {
         <WhyMarketingSection sectionId="lp-why-heading" />
 
         {/* Execution */}
-        <section className="py-12 lg:py-16 bg-white" aria-labelledby="lp-execution-heading">
+        <section className={`${SECTION_PADDING} bg-white`} aria-labelledby="lp-execution-heading">
           <div className="max-w-[1140px] mx-auto w-full px-4">
             <h2
               id="lp-execution-heading"
-              className="text-2xl sm:text-3xl lg:text-5xl font-bold text-center mb-10 lg:mb-14"
+              className={`${SECTION_HEADING} text-center`}
             >
               How Should It Be{" "}
               <span className="text-[#ffc800]">Executed?</span>
-              <p></p>
             </h2>
+            <p className="text-sm text-[#666] leading-relaxed max-w-2xl mx-auto text-center mb-8 mt-2">Our marketing process combines research, strategy, creative promotion, and continuous optimization to help your book reach the right audience.</p>
 
             <div className="hidden lg:flex items-center gap-8 xl:gap-10">
               <div className="flex-[1] flex flex-col justify-center gap-14 xl:gap-20 min-w-0">
                 {EXECUTION_STEPS.slice(0, 2).map((step) => (
-                  <div key={step.number} className="text-right">
+                  <div key={step.number} className="text-right transition-all duration-300 hover:translate-x-[-4px]">
                     <span className="block text-4xl xl:text-5xl font-bold text-[#ffc800] leading-none mb-3">
                       {step.number}
                     </span>
@@ -466,21 +901,21 @@ export default function BookMarketingLpPage() {
                 ))}
               </div>
 
-              <div className="flex-[1.45] flex items-center justify-center shrink-0">
-                <div className="w-52 h-52 xl:w-60 xl:h-60 rounded-full bg-white flex items-center justify-center shadow-[0_0_50px_rgba(255,200,0,0.35)]">
+              <div className="flex-[1.5] flex items-center justify-center shrink-0">
+                <div className="w-52 h-52 xl:w-full xl:h-[450px] border-2 border-[#ffc800] rounded-full bg-white flex items-center justify-center shadow-[0_0_50px_rgba(255,200,0,0.35)] transition-all duration-300 hover:shadow-[0_0_60px_rgba(255,200,0,0.45)]">
                   <img
                     src="/book-marketing-lp/logo.png"
                     alt="Stamford Publishers"
                     width={140}
                     height={140}
-                    className="w-28 xl:w-32 h-auto"
+                    className="w-28 xl:w-76 h-auto"
                   />
                 </div>
               </div>
 
               <div className="flex-[1] flex flex-col justify-center gap-14 xl:gap-20 min-w-0">
                 {EXECUTION_STEPS.slice(2, 4).map((step) => (
-                  <div key={step.number} className="text-left">
+                  <div key={step.number} className="text-left transition-all duration-300 hover:translate-x-1">
                     <span className="block text-4xl xl:text-5xl font-bold text-[#ffc800] leading-none mb-3">
                       {step.number}
                     </span>
@@ -493,7 +928,7 @@ export default function BookMarketingLpPage() {
 
             <div className="lg:hidden">
               <div className="flex justify-center mb-10">
-                <div className="w-44 h-44 rounded-full bg-white flex items-center justify-center shadow-[0_0_50px_rgba(255,200,0,0.35)]">
+                <div className="w-44 h-44 rounded-full bg-white flex items-center justify-center shadow-[0_0_50px_rgba(255,200,0,0.35)] transition-all duration-300">
                   <img
                     src="/book-marketing-lp/logo.png"
                     alt="Stamford Publishers"
@@ -506,7 +941,7 @@ export default function BookMarketingLpPage() {
 
               <div className="grid sm:grid-cols-2 gap-8">
                 {EXECUTION_STEPS.map((step) => (
-                  <div key={step.number}>
+                  <div key={step.number} className="transition-all duration-300 hover:-translate-y-1">
                     <span className="block text-3xl font-bold text-[#ffc800] leading-none mb-2">
                       {step.number}
                     </span>
@@ -518,16 +953,12 @@ export default function BookMarketingLpPage() {
             </div>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-12 lg:mt-14">
-              <a
-                href="#lp-hero-form"
-                className="group relative inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full overflow-hidden bg-[#ffc800] text-[#111] font-bold text-sm uppercase tracking-wide transition-colors duration-300 hover:text-white"
-              >
-                <span className="absolute inset-0 bg-[#111] rounded-full scale-x-0 origin-left transition-transform duration-[400ms] ease-[cubic-bezier(0.4,0,0.2,1)] group-hover:scale-x-100" aria-hidden="true" />
-                <span className="relative z-10">Get A Quote</span>
-              </a>
-              <a href={PHONE_HREF} className="flex items-center gap-3 text-sm font-semibold text-[#111]">
-                <span className="flex items-center justify-center w-10 h-10 rounded-full bg-[#ffc800] shrink-0">
-                  <FaPhone className="w-4 h-4" aria-hidden="true" />
+              <LpButton href="#lp-hero-form" className="px-6 py-3 rounded-full text-sm uppercase tracking-wide">
+                Get A Quote
+              </LpButton>
+              <a href={PHONE_HREF} className="flex items-center gap-3 text-sm font-semibold text-[#111] transition-all duration-300 hover:opacity-80">
+                <span className="flex items-center justify-center w-10 h-10 rounded-full bg-[#ffc800] shrink-0 transition-colors duration-300 group-hover:bg-[#111]">
+                  <FaPhone className="w-4 h-4 text-[#111]" aria-hidden="true" />
                 </span>
                 <span>
                   <span className="text-[#666] text-xs block leading-tight">Call Now</span>
@@ -539,24 +970,33 @@ export default function BookMarketingLpPage() {
         </section>
 
         {/* Why Choose Us */}
-        <section className="bg-[#fff8e6] py-12 lg:py-16" aria-labelledby="lp-choose-heading">
+        <section className={`${SECTION_PADDING} bg-white`} aria-labelledby="lp-choose-heading">
           <div className="max-w-[1140px] mx-auto w-full px-4">
             <h2
               id="lp-choose-heading"
-              className="text-2xl sm:text-3xl lg:text-4xl font-bold text-center mb-8 lg:mb-12"
+              className={`${SECTION_HEADING} max-w-2xl mx-auto text-center mb-8 lg:mb-12`}
             >
               Why Authors Choose Stamford Publishers
             </h2>
 
-            <div className="grid md:grid-cols-3 gap-6">
+            <div className="grid md:grid-cols-3 gap-5 lg:gap-6">
               {WHY_CHOOSE.map((item) => (
                 <div
                   key={item.number}
-                  className="bg-[#ffc800] rounded-xl p-6 lg:p-8 text-[#111]"
+                  className={`bg-[#FFF2C2] rounded-[24px] p-6 sm:p-8 text-left ${CARD_HOVER}`}
                 >
-                  <span className="text-3xl font-bold block mb-3">{item.number}</span>
-                  <h3 className="text-lg font-bold mb-2">{item.title}</h3>
-                  <p className="text-sm leading-relaxed">{item.description}</p>
+                  <h2
+                    className="block text-7xl font-bold text-[#ffc800]/45 leading-none mb-4"
+                    aria-hidden="true"
+                  >
+                    {item.number}
+                  </h2>
+                  <h3 className="text-xl lg:text-[22px] font-bold text-[#111] mb-3 leading-tight">
+                    {item.title}
+                  </h3>
+                  <p className="text-sm sm:text-[15px] text-[#111] leading-relaxed">
+                    {item.description}
+                  </p>
                 </div>
               ))}
             </div>
@@ -564,10 +1004,10 @@ export default function BookMarketingLpPage() {
         </section>
 
         {/* Packages */}
-        <section className="py-12 lg:py-16 bg-white" aria-labelledby="lp-packages-heading">
+        <section className={`${SECTION_PADDING} bg-[#FFF5CE]`} aria-labelledby="lp-packages-heading">
           <div className="max-w-[1140px] mx-auto w-full px-4">
             <div className="text-center mb-8 lg:mb-12">
-              <h2 id="lp-packages-heading" className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-3">
+              <h2 id="lp-packages-heading" className={`${SECTION_HEADING} mb-3`}>
                 Marketing Packages
               </h2>
               <p className="text-[#555] text-sm max-w-2xl mx-auto">
@@ -576,61 +1016,27 @@ export default function BookMarketingLpPage() {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-6">
-              {["Starter Plan", "Growth Plan", "Premium Plan"].map((planName) => (
-                <div key={planName} className="border border-[#e5e5e5] rounded-xl overflow-hidden shadow-sm">
-                  <div className="bg-[#ffc800] py-4 px-6 text-center">
-                    <h3 className="font-bold text-lg">{planName}</h3>
-                  </div>
-                  <div className="p-6">
-                    <ul className="space-y-2.5 mb-6">
-                      {PACKAGE_FEATURES.map((feature) => (
-                        <li key={feature} className="flex items-start gap-2 text-sm text-[#444]">
-                          <span className="text-green-500 font-bold shrink-0">✓</span>
-                          {feature}
-                        </li>
-                      ))}
-                    </ul>
-                    <a
-                      href="#lp-hero-form"
-                      className="group relative inline-flex items-center justify-center gap-2 w-full mb-4 px-6 py-3 rounded-full overflow-hidden bg-[#ffc800] text-[#111] font-bold text-sm uppercase tracking-wide transition-colors duration-300 hover:text-white"
-                    >
-                      <span className="absolute inset-0 bg-[#111] rounded-full scale-x-0 origin-left transition-transform duration-[400ms] ease-[cubic-bezier(0.4,0,0.2,1)] group-hover:scale-x-100" aria-hidden="true" />
-                      <span className="relative z-10">Get Started</span>
-                    </a>
-                    <a
-                      href={PHONE_HREF}
-                      className="flex items-center justify-center gap-2 text-sm font-semibold text-[#111]"
-                    >
-                      <FaPhone className="text-[#ffc800]" aria-hidden="true" />
-                      {PHONE}
-                    </a>
-                  </div>
-                </div>
+            <div className="grid md:grid-cols-3 gap-8 lg:gap-10">
+              {MARKETING_PACKAGES.map((plan) => (
+                <PricingPlanCard key={plan.name} name={plan.name} features={plan.features} />
               ))}
             </div>
           </div>
         </section>
 
         {/* Our Works */}
-        <section className="bg-[#fff8e6] py-12 lg:py-16" aria-labelledby="lp-works-heading">
+        <section className={`${SECTION_PADDING} bg-[#fff8e6]`} aria-labelledby="lp-works-heading">
           <div className="max-w-[1140px] mx-auto w-full px-4">
             <div className="text-center mb-8">
-              <h2 id="lp-works-heading" className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-3">
+              <h2 id="lp-works-heading" className={`${SECTION_HEADING} mb-3`}>
                 Our Works
               </h2>
               <p className="text-[#555] text-sm max-w-xl mx-auto">
-                A selection of books we have helped promote across fiction, non-fiction, and children&apos;s genres.
+                A look at the campaigns and titles we’ve helped bring to market built on strategy, creativity, and measurable results across genres and platforms.
               </p>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-              {WORK_COVERS.map((cover) => (
-                <div key={cover.src} className="rounded-lg overflow-hidden shadow-md aspect-[3/4]">
-                  <img src={cover.src} alt={cover.alt} className="w-full h-full object-cover" />
-                </div>
-              ))}
-            </div>
+            <WorksCarousel />
           </div>
         </section>
 
@@ -638,66 +1044,83 @@ export default function BookMarketingLpPage() {
         <WhyMarketingSection sectionId="lp-why-heading-2" />
 
         {/* Testimonials */}
-        <section className="py-12 lg:py-16 bg-white" aria-labelledby="lp-testimonials-heading">
+        <section className={`${SECTION_PADDING} bg-[#FFF5CE]`} aria-labelledby="lp-testimonials-heading">
           <div className="max-w-[1140px] mx-auto w-full px-4">
-            <h2
-              id="lp-testimonials-heading"
-              className="text-2xl sm:text-3xl lg:text-4xl font-bold text-center mb-8 lg:mb-12"
-            >
-              What Authors Say
-            </h2>
-
-            <div className="grid md:grid-cols-2 gap-6">
-              {TESTIMONIALS.map((item) => (
-                <article key={item.author} className="border border-[#e5e5e5] rounded-xl p-6 lg:p-8 bg-white shadow-sm">
-                  <h3 className="font-bold text-lg mb-2">{item.title}</h3>
-                  <div className="flex gap-0.5 mb-4 text-[#ffc800]" aria-label="5 out of 5 stars">
-                    {Array.from({ length: 5 }).map((_, i) => (
-                      <FaStar key={i} className="w-4 h-4" aria-hidden="true" />
-                    ))}
-                  </div>
-                  <p className="text-sm text-[#555] leading-relaxed mb-4">&ldquo;{item.quote}&rdquo;</p>
-                  <p className="font-bold text-sm">{item.author}</p>
-                  <p className="text-xs text-[#888]">{item.role}</p>
-                </article>
-              ))}
+            <div className="text-center mb-8 lg:mb-10">
+              <h2
+                id="lp-testimonials-heading"
+                className={`${SECTION_HEADING} mb-4`}
+              >
+                What Authors Say
+              </h2>
+              <p className="text-[#444] text-sm sm:text-[15px] max-w-2xl mx-auto leading-relaxed">
+                Authors work with Stamford Publishers because of our transparent communication and
+                results-focused approach from debut writers to seasoned authors building out a backlist.
+              </p>
             </div>
+
+            <TestimonialsCarousel />
           </div>
         </section>
       </div>
 
       {/* LP Footer */}
-      <footer className="relative bg-[#fff8e6] pt-16 pb-8" aria-label="Contact and footer">
-        <div className="max-w-[1140px] mx-auto w-full px-4">
-          <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 mb-10">
-            <div className="space-y-5">
-              <img src="/logo.png" alt="Stamford Publishers" width={100} height={100} className="h-16 w-auto" />
+      <footer className={`relative overflow-hidden pt-12 lg:pt-16 pb-8 transition-all duration-300`} aria-label="Contact and footer">
+        <div
+          className="absolute inset-0 pointer-events-none bg-[#fff8e6]/20 bg-[url('/book-marketing-lp/bannerbg%20(1).webp')] bg-cover bg-center opacity-100"
+          aria-hidden="true"
+        />
+        <div className="absolute inset-0 pointer-events-none bg-[#fff8e6]/88" aria-hidden="true" />
 
-              <ul className="space-y-4 text-sm">
-                <li>
-                  <a href={PHONE_HREF} className="flex items-start gap-3 hover:opacity-80 transition-opacity">
-                    <FaPhone className="w-4 h-4 mt-0.5 text-[#ffc800] shrink-0" aria-hidden="true" />
-                    <span>{PHONE}</span>
+        <div className="relative z-10 max-w-[1140px] mx-auto w-full px-4">
+
+          <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 mb-12 lg:mb-14">
+            <div className="space-y-6">
+              <div className="flex items-start gap-4">
+                <span className="flex items-center justify-center w-11 h-11 rounded-full bg-[#ffc800] shrink-0 transition-all duration-300 hover:bg-[#111] group">
+                  <FaPhone className="w-4 h-4 text-white transition-colors duration-300" aria-hidden="true" />
+                </span>
+                <div>
+                  <p className="text-sm text-[#111] mb-0.5">Call Now</p>
+                  <a href={PHONE_HREF} className="font-bold text-[#111] hover:opacity-80 transition-opacity">
+                    {PHONE_DISPLAY}
                   </a>
-                </li>
-                <li>
-                  <a href={`mailto:${EMAIL}`} className="flex items-start gap-3 hover:opacity-80 transition-opacity">
-                    <FaEnvelope className="w-4 h-4 mt-0.5 text-[#ffc800] shrink-0" aria-hidden="true" />
-                    <span>{EMAIL}</span>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-4">
+                <span className="flex items-center justify-center w-11 h-11 rounded-full bg-[#ffc800] shrink-0 transition-all duration-300 hover:bg-[#111]">
+                  <FaEnvelope className="w-4 h-4 text-white" aria-hidden="true" />
+                </span>
+                <div>
+                  <p className="text-sm text-[#111] mb-0.5">Mail Us</p>
+                  <a
+                    href={`mailto:${EMAIL}`}
+                    className="font-bold text-[#111] hover:opacity-80 transition-opacity break-all"
+                  >
+                    {EMAIL}
                   </a>
-                </li>
-                <li>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-4">
+                <span className="flex items-center justify-center w-11 h-11 rounded-full bg-[#ffc800] shrink-0 transition-all duration-300 hover:bg-[#111]">
+                  <FaLocationDot className="w-4 h-4 text-white" aria-hidden="true" />
+                </span>
+                <div>
+                  <p className="text-sm text-[#111] mb-0.5">Find Us</p>
                   <a
                     href="https://maps.google.com/?q=1001+Wilshire+Boulevard+%231439+Los+Angeles+CA+90017"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-start gap-3 hover:opacity-80 transition-opacity"
+                    className="font-bold text-[#111] hover:opacity-80 transition-opacity leading-snug"
                   >
-                    <FaLocationDot className="w-4 h-4 mt-0.5 text-[#ffc800] shrink-0" aria-hidden="true" />
-                    <span>1001 Wilshire Boulevard #1439 Los Angeles, CA 90017</span>
+                    1001 Wilshire Boulevard #1439
+                    <br />
+                    Los Angeles, CA 90017
                   </a>
-                </li>
-              </ul>
+                </div>
+              </div>
 
               <div className="flex items-center gap-3 pt-2">
                 <a
@@ -705,7 +1128,7 @@ export default function BookMarketingLpPage() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Facebook"
-                  className="flex items-center justify-center w-9 h-9 rounded-full border border-[#ccc] hover:bg-[#ffc800] hover:border-[#ffc800] transition-colors"
+                  className="flex items-center justify-center w-9 h-9 rounded-full bg-[#ffc800] text-white hover:bg-[#111] transition-all duration-300"
                 >
                   <FaFacebookF className="w-4 h-4" />
                 </a>
@@ -714,7 +1137,7 @@ export default function BookMarketingLpPage() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Instagram"
-                  className="flex items-center justify-center w-9 h-9 rounded-full border border-[#ccc] hover:bg-[#ffc800] hover:border-[#ffc800] transition-colors"
+                  className="flex items-center justify-center w-9 h-9 rounded-full bg-[#ffc800] text-white hover:bg-[#111] transition-all duration-300"
                 >
                   <FaInstagram className="w-4 h-4" />
                 </a>
@@ -722,116 +1145,87 @@ export default function BookMarketingLpPage() {
             </div>
 
             <div>
-              <h2 className="text-xl sm:text-2xl font-bold mb-5">We Would Love To Hear From You</h2>
-              <form onSubmit={handleFormSubmit} className="space-y-3">
-                <div className="grid sm:grid-cols-2 gap-3">
-                  <input type="text" name="name" placeholder="Name" required className="w-full px-3 py-2.5 border border-[#d9d9d9] rounded-md bg-white text-[#111] text-sm outline-none focus:border-[#ffc800] transition-colors" />
-                  <input type="email" name="email" placeholder="Email" required className="w-full px-3 py-2.5 border border-[#d9d9d9] rounded-md bg-white text-[#111] text-sm outline-none focus:border-[#ffc800] transition-colors" />
-                </div>
-                <div className="grid sm:grid-cols-2 gap-3">
-                  <input type="tel" name="phone" placeholder="Phone Number" required className="w-full px-3 py-2.5 border border-[#d9d9d9] rounded-md bg-white text-[#111] text-sm outline-none focus:border-[#ffc800] transition-colors" />
-                  <select name="genre" required className="w-full px-3 py-2.5 border border-[#d9d9d9] rounded-md bg-white text-[#111] text-sm outline-none focus:border-[#ffc800] transition-colors" defaultValue="">
-                    <option value="" disabled>Genre</option>
-                    {GENRE_OPTIONS.map((g) => (
-                      <option key={g} value={g}>{g}</option>
-                    ))}
-                  </select>
-                </div>
-                <textarea
-                  name="message"
-                  placeholder="How can we help?"
+              <h2 className={`${SECTION_HEADING} text-[#111] mb-2`}>
+                We Would Love To Hear From You
+              </h2>
+              <form onSubmit={handleFormSubmit} className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="Name"
                   required
-                  className="w-full min-h-[100px] resize-y px-3 py-2.5 border border-[#d9d9d9] rounded-md bg-white text-[#111] text-sm outline-none focus:border-[#ffc800] transition-colors"
+                  className={FOOTER_FIELD_CLASS}
                 />
-                <button type="submit" className="group relative inline-flex items-center justify-center gap-2 w-full px-6 py-3 rounded-full overflow-hidden bg-[#ffc800] text-[#111] font-bold text-sm uppercase tracking-wide transition-colors duration-300 hover:text-white">
-                  <span className="absolute inset-0 bg-[#111] rounded-full scale-x-0 origin-left transition-transform duration-[400ms] ease-[cubic-bezier(0.4,0,0.2,1)] group-hover:scale-x-100" aria-hidden="true" />
-                  <span className="relative z-10">Send Message</span>
-                </button>
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Email"
+                  required
+                  className={FOOTER_FIELD_CLASS}
+                />
+                <input
+                  type="tel"
+                  name="phone"
+                  placeholder="Your Phone"
+                  required
+                  className={FOOTER_FIELD_CLASS}
+                />
+                <select name="timeline" required className={FOOTER_SELECT_CLASS} defaultValue="3 Months">
+                  {TIMELINE_OPTIONS.map((opt) => (
+                    <option key={opt} value={opt}>
+                      {opt}
+                    </option>
+                  ))}
+                </select>
+                <select name="published" required className={FOOTER_SELECT_CLASS} defaultValue="Yes">
+                  {PUBLISHED_OPTIONS.map((opt) => (
+                    <option key={opt} value={opt}>
+                      {opt}
+                    </option>
+                  ))}
+                </select>
+                <LpButton type="submit" className="w-full sm:col-span-2 rounded-lg py-3 px-6 text-sm uppercase tracking-wide">
+                  Submit Now
+                </LpButton>
               </form>
             </div>
           </div>
 
-          <div className="border-t border-[#ddd] pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#888]">
-            <p>Copyright © 2026 Stamford Publishers. All rights reserved.</p>
-            <img src="/logo.png" alt="" className="h-8 w-auto opacity-60" aria-hidden="true" />
+          <div className="border-t border-[#d8d0c0]/80 pt-6 flex flex-col lg:flex-row items-center justify-between gap-6">
+            <p className="text-xs sm:text-sm text-[#111] text-center lg:text-left">
+              2026 © Stamford Publishers – All Right Reserved
+            </p>
+
+            <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-20">
+              <img
+                src={FOOTER_BADGES.dmca}
+                alt="DMCA Protected"
+                className="h-10 w-auto object-contain transition-all duration-300 hover:opacity-80"
+              />
+              <img
+                src={FOOTER_BADGES.payments}
+                alt="Accepted payment methods"
+                className="h-9 w-auto object-contain"
+              />
+              <img
+                src={FOOTER_BADGES.trustpilot}
+                alt="Trustpilot rating"
+                className="h-12 w-auto object-contain"
+              />
+            </div>
           </div>
         </div>
+
+        <a
+          href="#lp-hero-form"
+          className="fixed bottom-5 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#0084ff] text-white shadow-[0_4px_20px_rgba(0,132,255,0.45)] hover:bg-[#111] transition-all duration-300 hover:scale-105"
+          aria-label="Chat with us"
+        >
+          <FaComments className="w-6 h-6" aria-hidden="true" />
+        </a>
       </footer>
 
-      {/* 30-second popup */}
-      {popupOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/55 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="lp-popup-heading">
-          <div className="relative grid max-w-[900px] w-full max-h-[90vh] overflow-hidden rounded shadow-[0_24px_64px_rgba(0,0,0,0.25)] md:grid-cols-2 bg-white">
-            <div className="bg-[#ffc800] p-6 lg:p-8 flex flex-col min-h-[280px]">
-              <h2 id="lp-popup-heading" className="text-xl sm:text-2xl font-bold leading-snug mb-6">
-                Turn Your Book Into a Bestseller With Stamford Publishers
-              </h2>
-
-              <div className="space-y-4 text-sm mb-6">
-                <div className="flex items-start gap-3">
-                  <FaPhone className="w-4 h-4 mt-0.5 shrink-0" aria-hidden="true" />
-                  <div>
-                    <p className="font-semibold">Call Us</p>
-                    <a href={PHONE_HREF} className="hover:underline">{PHONE}</a>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <FaEnvelope className="w-4 h-4 mt-0.5 shrink-0" aria-hidden="true" />
-                  <div>
-                    <p className="font-semibold">Discuss your ideas</p>
-                    <a href={`mailto:${EMAIL}`} className="hover:underline">{EMAIL}</a>
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex-1 flex items-end">
-                <img
-                  src="/homepage-hero.png"
-                  alt="Author using smartphone for book marketing"
-                  className="w-full max-w-[220px] mx-auto object-contain"
-                />
-              </div>
-            </div>
-
-            <div className="p-6 lg:p-8 relative">
-              <button
-                type="button"
-                onClick={closePopup}
-                className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center bg-[#111] text-white rounded-sm hover:bg-[#333] transition-colors"
-                aria-label="Close popup"
-              >
-                <FaXmark className="w-4 h-4" />
-              </button>
-
-              <form onSubmit={(e) => { handleFormSubmit(e); closePopup(); }} className="space-y-3 mt-2">
-                <div className="grid sm:grid-cols-2 gap-3">
-                  <input type="text" name="name" placeholder="Name" required className="w-full px-3 py-2.5 border border-[#d9d9d9] rounded-md bg-white text-[#111] text-sm outline-none focus:border-[#ffc800] transition-colors" />
-                  <input type="email" name="email" placeholder="Email" required className="w-full px-3 py-2.5 border border-[#d9d9d9] rounded-md bg-white text-[#111] text-sm outline-none focus:border-[#ffc800] transition-colors" />
-                </div>
-                <div className="grid sm:grid-cols-2 gap-3">
-                  <input type="tel" name="phone" placeholder="123-456-7890" required className="w-full px-3 py-2.5 border border-[#d9d9d9] rounded-md bg-white text-[#111] text-sm outline-none focus:border-[#ffc800] transition-colors" />
-                  <select name="genre" required className="w-full px-3 py-2.5 border border-[#d9d9d9] rounded-md bg-white text-[#111] text-sm outline-none focus:border-[#ffc800] transition-colors" defaultValue="Audiobook">
-                    {GENRE_OPTIONS.map((g) => (
-                      <option key={g} value={g}>{g}</option>
-                    ))}
-                  </select>
-                </div>
-                <input type="text" name="bookTitle" placeholder="Book Title" required className="w-full px-3 py-2.5 border border-[#d9d9d9] rounded-md bg-white text-[#111] text-sm outline-none focus:border-[#ffc800] transition-colors" />
-                <textarea
-                  name="aboutBook"
-                  placeholder="Tell Us About Your Book"
-                  required
-                  className="w-full min-h-[100px] resize-y px-3 py-2.5 border border-[#d9d9d9] rounded-md bg-white text-[#111] text-sm outline-none focus:border-[#ffc800] transition-colors"
-                />
-                <button type="submit" className="group relative inline-flex items-center justify-center gap-2 w-full px-6 py-3 rounded-full overflow-hidden bg-[#ffc800] text-[#111] font-bold text-sm uppercase tracking-wide transition-colors duration-300 hover:text-white">
-                  <span className="absolute inset-0 bg-[#111] rounded-full scale-x-0 origin-left transition-transform duration-[400ms] ease-[cubic-bezier(0.4,0,0.2,1)] group-hover:scale-x-100" aria-hidden="true" />
-                  <span className="relative z-10">Submit Now</span>
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
-      )}
+      {popupMounted && popupModal ? createPortal(popupModal, document.body) : null}
     </>
   );
 }
@@ -839,6 +1233,75 @@ export default function BookMarketingLpPage() {
 const WHY_MARKETING_SHAPE_DIVIDER_MASK = `url("data:image/svg+xml,${encodeURIComponent(
   '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100"><path d="m0 4 150 40h160l190 50 190-50h160l150-40V0H0v4z" fill="black"/></svg>',
 )}")`;
+
+function PaperEdge({ flip }: { flip: "top" | "bottom" }) {
+  return (
+    <svg
+      viewBox="0 0 95 0 24"
+      preserveAspectRatio="none"
+      className={`block w-full h-5 sm:h-6 ${flip === "bottom" ? "rotate-180" : ""}`}
+      aria-hidden="true"
+    >
+      <path
+        d="M0,24 L80,6 L160,24 L240,6 L320,24 L400,6 L480,24 L560,6 L640,24 L720,6 L800,24 L880,6 L960,24 L1000,6 L1000,24 L0,24 Z"
+        fill="#d2d2d2"
+      />
+    </svg>
+  );
+}
+
+function PricingPlanCard({ name, features }: { name: string; features: string[] }) {
+  return (
+    <article className={`relative flex flex-col ${CARD_HOVER}`}>
+      <PaperEdge flip="top" />
+
+      <div className="relative bg-[#d2d2d2] px-6 sm:px-7 pt-5 pb-7 transition-all duration-300">
+        <div className="absolute inset-0 bg-[#d2d2d2] pointer-events-none" aria-hidden="true" />
+
+        <div className="relative z-10">
+          <h3 className="text-center text-xl sm:text-2xl lg:text-3xl font-bold text-[#111] mb-4 transition-all duration-300">{name}</h3>
+
+          <LpButton
+            href="#lp-hero-form"
+            className="w-full rounded-full text-white text-sm font-light p-2 mb-5 normal-case"
+          >
+            Chat Now to Avail Discounted Pricing
+          </LpButton>
+
+          <ul
+            className="max-h-[210px] overflow-y-auto space-y-3 mb-6 pr-2 [scrollbar-width:thin] [scrollbar-color:#4a4a4a_#ffffff] [&::-webkit-scrollbar]:w-2.5 [&::-webkit-scrollbar-track]:bg-white [&::-webkit-scrollbar-thumb]:bg-[#4a4a4a] [&::-webkit-scrollbar-thumb]:rounded-full"
+          >
+            {features.map((feature) => (
+              <li key={feature} className="flex items-start gap-3 text-sm text-[#111] leading-relaxed transition-all duration-300">
+                <span className="mt-2 w-2 h-2 rounded-full bg-[#ffc800] shrink-0" aria-hidden="true" />
+                {feature}
+              </li>
+            ))}
+          </ul>
+
+          <LpButton
+            href="#lp-hero-form"
+            className="w-full rounded-full font-semibold text-[15px] py-2 px-6 mb-5 normal-case"
+          >
+            Get Started
+          </LpButton>
+
+          <a href={PHONE_HREF} className="flex items-center justify-center gap-3 group transition-all duration-300">
+                <span className="flex items-center justify-center w-11 h-11 rounded-full bg-[#ffc800] shrink-0 transition-all duration-300 group-hover:bg-[#111]">
+                  <FaPhone className="w-4 h-4 text-white" aria-hidden="true" />
+                </span>
+            <span className="text-sm leading-tight text-left">
+              <span className="text-[#111] text-xs block">Share Your Idea?</span>
+              <span className="font-bold text-[#111]">{PHONE_DISPLAY}</span>
+            </span>
+          </a>
+        </div>
+      </div>
+
+      <PaperEdge flip="bottom" />
+    </article>
+  );
+}
 
 function WhyMarketingSection({ sectionId }: { sectionId: string }) {
   const dividerHeight = "h-[60px] sm:h-[80px] lg:h-[100px]";
@@ -871,7 +1334,7 @@ function WhyMarketingSection({ sectionId }: { sectionId: string }) {
   );
 
   return (
-    <section className="relative mt-20" aria-labelledby={sectionId}>
+    <section className="relative mt-12 sm:mt-16 lg:mt-20 transition-all duration-300" aria-labelledby={sectionId}>
       <ShapeBand className="-mb-2" />
 
       <div className="relative">
@@ -879,41 +1342,37 @@ function WhyMarketingSection({ sectionId }: { sectionId: string }) {
           {backgroundLayers}
         </div>
 
-        <div className="relative z-10 max-w-[1140px] mx-auto w-full py-10 sm:py-12 lg:py-14">
+        <div className="relative z-10 max-w-[1140px] mx-auto w-full py-10 sm:py-12 lg:py-14 px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-            <div className="relative">
+            <div className="relative flex justify-center lg:justify-start min-h-0 lg:min-h-[420px]">
               <img
                 src="/book-marketing-lp/girlwithtablet.png"
                 alt="Author reviewing book marketing on a tablet"
-                className="absolute -top-76 left-0 z-[5] w-full max-w-[340px] sm:max-w-[400px] lg:max-w-[400px] h-auto"
+                className="relative lg:absolute lg:-top-24 lg:left-10 z-[5] w-full max-w-[260px] sm:max-w-[300px] lg:max-w-[400px] h-auto mx-auto lg:mx-0 transition-all duration-300"
               />
             </div>
 
-            <div>
+            <div className="">
               <h2
                 id={sectionId}
-                className="text-3xl sm:text-4xl lg:text-[42px] font-bold leading-tight text-[#111] mb-5 sm:mb-6"
+                className={`${SECTION_HEADING} leading-tight text-[#111] mb-5 sm:mb-6`}
               >
                 Why Book Marketing
                 <br />
                 Matters
               </h2>
-              <p className="text-[#111] text-sm sm:text-[15px] leading-relaxed mb-8 max-w-xl">
+              <p className="text-[#111] text-sm sm:text-[15px] leading-relaxed mb-8 max-w-xl transition-all duration-300">
                 Publishing a book is only half the journey — getting it read is the other. Our marketing
                 programs are built to close that gap, combining audience research, targeted promotion,
                 and ongoing optimization so your book doesn&apos;t just exist online, it gets discovered.
               </p>
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-5">
-                <a
-                  href="#lp-hero-form"
-                  className="group relative inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full overflow-hidden bg-[#ffc800] text-[#111] font-semibold text-sm transition-colors duration-300 hover:text-white normal-case"
-                >
-                  <span className="absolute inset-0 bg-[#111] rounded-full scale-x-0 origin-left transition-transform duration-[400ms] ease-[cubic-bezier(0.4,0,0.2,1)] group-hover:scale-x-100" aria-hidden="true" />
-                  <span className="relative z-10">Get A Quote</span>
-                </a>
-                <a href={PHONE_HREF} className="flex items-center gap-3 group">
-                  <span className="flex items-center justify-center w-10 h-10 rounded-full bg-[#ffc800] shrink-0 group-hover:bg-[#e6b400] transition-colors">
-                    <FaPhone className="w-4 h-4 text-[#111]" aria-hidden="true" />
+                <LpButton href="#lp-hero-form" className="px-6 py-3 rounded-full font-semibold text-sm normal-case">
+                  Get A Quote
+                </LpButton>
+                <a href={PHONE_HREF} className="flex items-center gap-3 group transition-all duration-300">
+                  <span className="flex items-center justify-center w-10 h-10 rounded-full bg-[#ffc800] shrink-0 group-hover:bg-[#111] transition-colors duration-300">
+                    <FaPhone className="w-4 h-4 text-[#111] group-hover:text-white transition-colors duration-300" aria-hidden="true" />
                   </span>
                   <span className="text-sm leading-tight">
                     <span className="text-[#666] text-xs block">Call Now</span>
@@ -926,7 +1385,7 @@ function WhyMarketingSection({ sectionId }: { sectionId: string }) {
         </div>
       </div>
 
-      <ShapeBand className="-mt-2 rotate-360" />
+      <ShapeBand className="-mt-2 rotate-360 z-20" />
     </section>
   );
 }
