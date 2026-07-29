@@ -90,7 +90,7 @@ export default function AboutUsPage() {
         description="Stamford Publishers, established in 2014, is a publishing services provider offering paid solutions for authors looking to publish, produce, and promote their books in print, eBook, and audiobook formats. Our services cover editing, formatting, cover design, audiobook production, and marketing support, designed to assist authors at every stage of the publishing journey. We work with both emerging and experienced writers, offering flexible, project-based solutions tailored to individual needs. Authors maintain full ownership and complete creative control of their work. Stamford Publishers is not a traditional publishing house or literary agency."
         btn1Text="Get A Free Consultation"
         btn2Text="Call Now"
-        imageSrc="/about-banner.webp"
+        imageSrc="/about-banner-img.webp"
         imageAlt="Stamford Publishers book covers"
         imageVariant="full"
         showForm

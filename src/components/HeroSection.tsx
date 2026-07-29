@@ -119,11 +119,11 @@ export default function HeroSection({
   const isFullBleedRight = imageVariant === "full" && imageBleedRight;
   const resolvedImageSrc = imageSrc.startsWith("/") ? imageSrc : `/${imageSrc}`;
   const fullGridImage = (
-    <div className="w-full h-[280px] sm:h-[360px] lg:h-[420px] overflow-hidden rounded-2xl">
+    <div className="w-full flex items-center justify-center overflow-visible">
       <img
         src={resolvedImageSrc}
         alt={imageAlt}
-        className="w-full h-full object-cover"
+        className="w-full h-auto max-h-[320px] sm:max-h-[400px] lg:max-h-[460px] object-contain"
       />
     </div>
   );
@@ -205,9 +205,7 @@ export default function HeroSection({
 
   const imageColumn = isFullBleedRight ? null : (
     <motion.div
-      className={`${imageColSpan} relative flex justify-center items-center mt-4 sm:mt-0 ${
-        imageVariant === "full" ? "" : "overflow-visible"
-      }`}
+      className={`${imageColSpan} relative flex justify-center items-center mt-4 sm:mt-0 overflow-visible`}
       initial={reduceMotion ? false : "hidden"}
       whileInView={reduceMotion ? undefined : "visible"}
       viewport={motionViewport}
