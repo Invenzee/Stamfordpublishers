@@ -541,13 +541,21 @@ export default function BookMarketingLpPage() {
   const popupModal =
     popupOpen && popupMounted ? (
       <div
-        className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/55 backdrop-blur-sm transition-opacity duration-300"
+        className="fixed inset-0 z-[200] flex items-start justify-center overflow-y-auto bg-black/55 px-4 pt-10 pb-6 backdrop-blur-sm transition-opacity duration-300 sm:items-center sm:overflow-hidden sm:p-4"
         role="dialog"
         aria-modal="true"
         aria-labelledby="lp-popup-heading"
       >
-        <div className="relative grid w-full max-w-[920px] max-h-[80vh] overflow-hidden shadow-[0_24px_64px_rgba(0,0,0,0.25)] md:grid-cols-[42%_58%] bg-white transition-all duration-300">
-          <div className="bg-[#ffc800] lg:p-6 flex flex-col min-h-[360px]">
+        <div className="relative my-auto grid w-full max-w-[920px] rounded-2xl bg-white shadow-[0_24px_64px_rgba(0,0,0,0.25)] transition-all duration-300 md:max-h-[90vh] md:grid-cols-[42%_58%] md:overflow-hidden">
+          <button
+            type="button"
+            onClick={closePopup}
+            className="absolute top-3 right-3 z-20 flex h-8 w-8 items-center justify-center rounded-md bg-[#111] text-white hover:bg-[#333] sm:top-4 sm:right-4"
+            aria-label="Close popup"
+          >
+            <FaXmark className="h-3.5 w-3.5" />
+          </button>
+          <div className="flex min-h-[280px] flex-col bg-[#ffc800] p-6 pr-12 lg:p-6">
             <h2
               id="lp-popup-heading"
               className={`${SECTION_HEADING} leading-[1.25] text-[#111] mb-2`}
@@ -585,19 +593,10 @@ export default function BookMarketingLpPage() {
             </div>
           </div>
 
-          <div className="p-7 sm:p-8 lg:p-10 relative overflow-y-auto">
-            <button
-              type="button"
-              onClick={closePopup}
-              className="absolute top-4 right-4 w-7 h-7 flex items-center justify-center bg-[#111] text-white hover:bg-[#333] transition-colors"
-              aria-label="Close popup"
-            >
-              <FaXmark className="w-3.5 h-3.5" />
-            </button>
-
+          <div className="p-7 sm:p-8 lg:p-10 md:max-h-[90vh] md:overflow-y-auto">
             <form
               onSubmit={(e) => handleLeadFormSubmit(e, "/book-marketing-lp-popup")}
-              className="space-y-5 pt-1 flex flex-col items-center justify-center"
+              className="flex flex-col items-center justify-center space-y-5"
             >
               <div className="grid grid-cols-2 gap-3">
                 <input

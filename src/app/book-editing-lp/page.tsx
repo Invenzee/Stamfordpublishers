@@ -987,7 +987,7 @@ export default function BookEditingLpPage() {
     popupOpen && popupMounted
       ? createPortal(
           <motion.div
-            className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/55 backdrop-blur-sm"
+            className="fixed inset-0 z-[200] flex items-start justify-center overflow-y-auto bg-black/55 px-4 pt-10 pb-6 backdrop-blur-sm sm:items-center sm:overflow-hidden sm:p-4"
             role="dialog"
             aria-modal="true"
             aria-labelledby="be-popup-heading"
@@ -996,13 +996,21 @@ export default function BookEditingLpPage() {
             transition={{ duration: 0.3 }}
           >
             <motion.div
-              className="relative grid w-full max-w-[920px] max-h-[90vh] overflow-hidden rounded-2xl shadow-[0_24px_64px_rgba(0,0,0,0.25)] md:grid-cols-[42%_58%] bg-white"
+              className="relative my-auto grid w-full max-w-[920px] rounded-2xl bg-white shadow-[0_24px_64px_rgba(0,0,0,0.25)] md:max-h-[90vh] md:grid-cols-[42%_58%] md:overflow-hidden"
               initial={reduceMotion ? false : { opacity: 0, scale: 0.94, y: 24 }}
               animate={reduceMotion ? undefined : { opacity: 1, scale: 1, y: 0 }}
               transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
             >
+              <button
+                type="button"
+                onClick={closePopup}
+                className="absolute top-3 right-3 z-20 flex h-8 w-8 items-center justify-center rounded-md bg-[#111] text-white hover:bg-[#333] sm:top-4 sm:right-4"
+                aria-label="Close popup"
+              >
+                <FaXmark className="h-3.5 w-3.5" />
+              </button>
               <div
-                className="flex min-h-[320px] flex-col p-6 lg:p-8"
+                className="flex min-h-[280px] flex-col p-6 pr-12 lg:p-8"
                 style={{ backgroundColor: PRIMARY_SOFT }}
               >
                 <h2
@@ -1039,18 +1047,10 @@ export default function BookEditingLpPage() {
                   />
                 </div>
               </div>
-              <div className="relative overflow-y-auto p-6 sm:p-8">
-                <button
-                  type="button"
-                  onClick={closePopup}
-                  className="absolute top-4 right-4 flex h-7 w-7 items-center justify-center rounded-md bg-[#111] text-white hover:bg-[#333]"
-                  aria-label="Close popup"
-                >
-                  <FaXmark className="h-3.5 w-3.5" />
-                </button>
+              <div className="p-6 sm:p-8 md:max-h-[90vh] md:overflow-y-auto">
                 <form
                   onSubmit={(e) => handleLeadFormSubmit(e, "/book-editing-lp-popup")}
-                  className="space-y-3 pt-6"
+                  className="space-y-3"
                 >
                   <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                     <input
